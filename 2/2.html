@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth motion-reduce:scroll-auto">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="CarbonFootprint India turns your travel, electricity, food and shopping into a running carbon total and shows which changes cut it most." />
+  <meta name="description"
+    content="CarbonFootprint India turns your travel, electricity, food and shopping into a running carbon total and shows which changes cut it most." />
   <title>CarbonFootprint India | Dashboard</title>
 
   <!-- Fonts: Young Serif for headings and big numbers, Hanken Grotesk for everything else -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Young+Serif&display=swap"
+    rel="stylesheet" />
 
   <!-- Tailwind CSS CDN with the official Typography plugin (?plugins=typography) -->
   <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
@@ -63,29 +67,85 @@
   </script>
   <style>
     /* Visible keyboard focus: dark ring on light areas, marigold ring on dark areas */
-    :focus-visible { outline: 3px solid #0F4C47; outline-offset: 3px; }
-    .on-dark :focus-visible { outline-color: #F2A900; }
+    :focus-visible {
+      outline: 3px solid #0F4C47;
+      outline-offset: 3px;
+    }
+
+    .on-dark :focus-visible {
+      outline-color: #F2A900;
+    }
 
     /* <meter> styled to the palette: green within budget, dark amber once over it */
-    meter { appearance: none; -webkit-appearance: none; display: block; width: 100%; height: 0.75rem; border: 0; border-radius: 2px; background: #fff; }
-    meter::-webkit-meter-bar { height: 0.75rem; border: 0; border-radius: 2px; background: #fff; box-shadow: inset 0 0 0 1px rgba(23, 48, 45, .18); }
-    meter::-webkit-meter-optimum-value { border-radius: 2px; background: #2F7D57; }
-    meter::-webkit-meter-suboptimum-value { border-radius: 2px; background: #F2A900; }
-    meter::-webkit-meter-even-less-good-value { border-radius: 2px; background: #B45309; }
-    meter::-moz-meter-bar { background: #2F7D57; }
-    meter:-moz-meter-sub-optimum::-moz-meter-bar { background: #F2A900; }
-    meter:-moz-meter-sub-sub-optimum::-moz-meter-bar { background: #B45309; }
+    meter {
+      appearance: none;
+      -webkit-appearance: none;
+      display: block;
+      width: 100%;
+      height: 0.75rem;
+      border: 0;
+      border-radius: 2px;
+      background: #fff;
+    }
+
+    meter::-webkit-meter-bar {
+      height: 0.75rem;
+      border: 0;
+      border-radius: 2px;
+      background: #fff;
+      box-shadow: inset 0 0 0 1px rgba(23, 48, 45, .18);
+    }
+
+    meter::-webkit-meter-optimum-value {
+      border-radius: 2px;
+      background: #2F7D57;
+    }
+
+    meter::-webkit-meter-suboptimum-value {
+      border-radius: 2px;
+      background: #F2A900;
+    }
+
+    meter::-webkit-meter-even-less-good-value {
+      border-radius: 2px;
+      background: #B45309;
+    }
+
+    meter::-moz-meter-bar {
+      background: #2F7D57;
+    }
+
+    meter:-moz-meter-sub-optimum::-moz-meter-bar {
+      background: #F2A900;
+    }
+
+    meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
+      background: #B45309;
+    }
 
     /* Drag and Drop feedback */
-    .drop-active { outline: 3px dashed #0F4C47; outline-offset: -3px; background-color: #D5E2DA; }
-    .is-dragging { opacity: .45; }
-    [draggable="true"] { cursor: grab; }
+    .drop-active {
+      outline: 3px dashed #0F4C47;
+      outline-offset: -3px;
+      background-color: #D5E2DA;
+    }
+
+    .is-dragging {
+      opacity: .45;
+    }
+
+    [draggable="true"] {
+      cursor: grab;
+    }
   </style>
 </head>
+
 <body class="bg-white font-sans text-ink antialiased">
 
   <!-- Skip link for keyboard and screen-reader users -->
-  <a href="#main" class="sr-only rounded-md bg-white px-4 py-2 font-semibold text-spruce focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60]">Skip to main content</a>
+  <a href="#main"
+    class="sr-only rounded-md bg-white px-4 py-2 font-semibold text-spruce focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60]">Skip
+    to main content</a>
 
   <!-- Header with navigation. Sticky, so the navigation stays in reach while scrolling. -->
   <header class="sticky top-0 z-50 border-b border-ink/10 bg-white/95 backdrop-blur">
@@ -103,22 +163,42 @@
         </span>
       </a>
 
-      <button id="menuButton" type="button" class="rounded-md border border-ink/20 p-2 text-spruce hover:bg-sage lg:hidden" aria-label="Open navigation menu" aria-controls="mainNav" aria-expanded="false">
+      <button id="menuButton" type="button"
+        class="rounded-md border border-ink/20 p-2 text-spruce hover:bg-sage lg:hidden"
+        aria-label="Open navigation menu" aria-controls="mainNav" aria-expanded="false">
         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
 
-      <nav id="mainNav" class="absolute inset-x-0 top-full hidden border-b border-ink/10 bg-white px-4 pb-4 pt-2 shadow-lg lg:static lg:block lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none" aria-label="Main navigation">
+      <nav id="mainNav"
+        class="absolute inset-x-0 top-full hidden border-b border-ink/10 bg-white px-4 pb-4 pt-2 shadow-lg lg:static lg:block lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none"
+        aria-label="Main navigation">
         <ul class="flex flex-col gap-1 lg:flex-row lg:items-center lg:gap-1">
-          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3" href="#home" aria-current="true">Home</a></li>
-          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3" href="#activities">Log Activity</a></li>
-          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3" href="#log">My Log</a></li>
-          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3" href="#insights">Insights</a></li>
-          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3" href="#pledges">Pledges</a></li>
-          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3" href="#apis">HTML5 APIs</a></li>
-          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3" href="#about">About</a></li>
-          <li class="lg:hidden xl:block"><a class="mt-2 block rounded-md bg-spruce px-4 py-2.5 text-center text-sm font-bold text-white transition-colors hover:bg-spruce-deep lg:mt-0 lg:ml-2" href="#activities">Start tracking</a></li>
+          <li><a data-nav
+              class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3"
+              href="#home" aria-current="true">Home</a></li>
+          <li><a data-nav
+              class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3"
+              href="#activities">Log Activity</a></li>
+          <li><a data-nav
+              class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3"
+              href="#log">My Log</a></li>
+          <li><a data-nav
+              class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3"
+              href="#insights">Insights</a></li>
+          <li><a data-nav
+              class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3"
+              href="#pledges">Pledges</a></li>
+          <li><a data-nav
+              class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3"
+              href="#apis">HTML5 APIs</a></li>
+          <li><a data-nav
+              class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3"
+              href="#about">About</a></li>
+          <li class="lg:hidden xl:block"><a
+              class="mt-2 block rounded-md bg-spruce px-4 py-2.5 text-center text-sm font-bold text-white transition-colors hover:bg-spruce-deep lg:mt-0 lg:ml-2"
+              href="#activities">Start tracking</a></li>
         </ul>
       </nav>
     </div>
@@ -128,15 +208,22 @@
 
     <!-- Hero: headline plus a live "carbon receipt" built from today's log -->
     <section id="home" class="on-dark bg-spruce text-white">
-      <div class="mx-auto grid max-w-6xl gap-12 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:px-8 lg:py-24">
+      <div
+        class="mx-auto grid max-w-6xl gap-12 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:px-8 lg:py-24">
 
         <div class="prose prose-hero prose-lg max-w-xl">
-          <h1 class="text-4xl leading-[1.08] sm:text-5xl lg:text-6xl">Your day has a carbon bill. See it, then cut the biggest line.</h1>
-          <p class="mt-6 text-lg">CarbonFootprint India turns your travel, electricity, food and shopping into a running total, and shows which changes cut it most.</p>
+          <h1 class="text-4xl leading-[1.08] sm:text-5xl lg:text-6xl">Your day has a carbon bill. See it, then cut the
+            biggest line.</h1>
+          <p class="mt-6 text-lg">CarbonFootprint India turns your travel, electricity, food and shopping into a running
+            total, and shows which changes cut it most.</p>
           <!-- not-prose stops the Typography plugin from underlining the button links -->
           <div class="not-prose mt-8 flex flex-wrap gap-3">
-            <a href="#activities" class="rounded-md bg-marigold px-6 py-3 font-bold text-spruce-deep transition-colors hover:bg-white">Log today’s activity</a>
-            <a href="#insights" class="rounded-md border border-white/40 px-6 py-3 font-bold text-white transition-colors hover:bg-white/10">See where a month goes</a>
+            <a href="#activities"
+              class="rounded-md bg-marigold px-6 py-3 font-bold text-spruce-deep transition-colors hover:bg-white">Log
+              today’s activity</a>
+            <a href="#insights"
+              class="rounded-md border border-white/40 px-6 py-3 font-bold text-white transition-colors hover:bg-white/10">See
+              where a month goes</a>
           </div>
         </div>
 
@@ -152,13 +239,18 @@
 
             <div class="mt-6 flex items-baseline justify-between border-t-2 border-ink pt-4">
               <p class="font-semibold">Total today</p>
-              <p class="font-display text-4xl tabular-nums text-spruce"><span id="receipt-total">0</span> <span class="font-sans text-base text-ink/70">kg CO₂e</span></p>
+              <p class="font-display text-4xl tabular-nums text-spruce"><span id="receipt-total">0</span> <span
+                  class="font-sans text-base text-ink/70">kg CO₂e</span></p>
             </div>
             <p id="receipt-note" class="mt-3 pb-7 text-sm text-ink/80"></p>
           </div>
           <!-- Torn paper edge -->
           <svg class="block h-3 w-full" aria-hidden="true">
-            <defs><pattern id="teeth" width="16" height="12" patternUnits="userSpaceOnUse"><path d="M0 0H16L8 12Z" fill="#fff" /></pattern></defs>
+            <defs>
+              <pattern id="teeth" width="16" height="12" patternUnits="userSpaceOnUse">
+                <path d="M0 0H16L8 12Z" fill="#fff" />
+              </pattern>
+            </defs>
             <rect width="100%" height="12" fill="url(#teeth)" />
           </svg>
         </section>
@@ -171,8 +263,10 @@
 
         <div class="prose prose-carbon prose-lg lg:col-span-2">
           <h2 class="text-3xl">Log an activity and see what it costs in carbon</h2>
-          <p>Pick a category, choose what you did and enter how much. The estimate updates as you type and uses everyday Indian conditions: two-wheelers, auto-rickshaws, the metro and LPG cooking gas.</p>
-          <p class="text-base">Emission factors here are illustrative. A production version would use verified figures.</p>
+          <p>Pick a category, choose what you did and enter how much. The estimate updates as you type and uses everyday
+            Indian conditions: two-wheelers, auto-rickshaws, the metro and LPG cooking gas.</p>
+          <p class="text-base">Emission factors here are illustrative. A production version would use verified figures.
+          </p>
         </div>
 
         <form id="estimator" class="rounded-xl border border-ink/20 bg-sage p-5 sm:p-7 lg:col-span-3" novalidate>
@@ -181,19 +275,24 @@
             <div class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
               <div>
                 <input class="peer sr-only" type="radio" name="category" id="cat-travel" value="travel" checked />
-                <label for="cat-travel" class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Travel</label>
+                <label for="cat-travel"
+                  class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Travel</label>
               </div>
               <div>
                 <input class="peer sr-only" type="radio" name="category" id="cat-energy" value="energy" />
-                <label for="cat-energy" class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Home energy</label>
+                <label for="cat-energy"
+                  class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Home
+                  energy</label>
               </div>
               <div>
                 <input class="peer sr-only" type="radio" name="category" id="cat-food" value="food" />
-                <label for="cat-food" class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Food</label>
+                <label for="cat-food"
+                  class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Food</label>
               </div>
               <div>
                 <input class="peer sr-only" type="radio" name="category" id="cat-shopping" value="shopping" />
-                <label for="cat-shopping" class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Shopping</label>
+                <label for="cat-shopping"
+                  class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Shopping</label>
               </div>
             </div>
           </fieldset>
@@ -201,28 +300,36 @@
           <div class="mt-6 grid gap-4 sm:grid-cols-2">
             <div>
               <label for="kind" class="block text-sm font-semibold">What did you do?</label>
-              <select id="kind" class="mt-1.5 block w-full rounded-md border border-ink/30 bg-white px-3 py-2.5"></select>
+              <select id="kind"
+                class="mt-1.5 block w-full rounded-md border border-ink/30 bg-white px-3 py-2.5"></select>
             </div>
             <div>
               <label for="amount" class="block text-sm font-semibold">How much?</label>
               <div class="mt-1.5 flex">
-                <input id="amount" type="number" min="0.01" step="any" inputmode="decimal" value="10" required aria-describedby="amount-error" class="block w-full min-w-0 rounded-l-md border border-ink/30 bg-white px-3 py-2.5 aria-[invalid=true]:border-red-700" />
-                <span id="unit" class="inline-flex items-center rounded-r-md border border-l-0 border-ink/30 bg-white px-3 text-sm text-ink/70">km</span>
+                <input id="amount" type="number" min="0.01" step="any" inputmode="decimal" value="10" required
+                  aria-describedby="amount-error"
+                  class="block w-full min-w-0 rounded-l-md border border-ink/30 bg-white px-3 py-2.5 aria-[invalid=true]:border-red-700" />
+                <span id="unit"
+                  class="inline-flex items-center rounded-r-md border border-l-0 border-ink/30 bg-white px-3 text-sm text-ink/70">km</span>
               </div>
               <p id="amount-error" class="mt-1.5 text-sm font-semibold text-red-700" role="alert"></p>
             </div>
             <div>
               <label for="entry-date" class="block text-sm font-semibold">Date</label>
-              <input id="entry-date" type="date" required aria-describedby="date-error" class="mt-1.5 block w-full rounded-md border border-ink/30 bg-white px-3 py-2.5 aria-[invalid=true]:border-red-700" />
+              <input id="entry-date" type="date" required aria-describedby="date-error"
+                class="mt-1.5 block w-full rounded-md border border-ink/30 bg-white px-3 py-2.5 aria-[invalid=true]:border-red-700" />
               <p id="date-error" class="mt-1.5 text-sm font-semibold text-red-700" role="alert"></p>
             </div>
             <div class="sm:self-start sm:pt-[1.625rem]">
-              <button id="add-button" type="submit" class="w-full rounded-md bg-spruce px-5 py-2.5 text-center font-bold text-white transition-colors hover:bg-spruce-deep">Add to my log</button>
+              <button id="add-button" type="submit"
+                class="w-full rounded-md bg-spruce px-5 py-2.5 text-center font-bold text-white transition-colors hover:bg-spruce-deep">Add
+                to my log</button>
             </div>
           </div>
 
           <div class="mt-6 rounded-lg bg-white p-5" aria-live="polite">
-            <p class="font-display text-4xl tabular-nums text-spruce"><output id="result-num" for="kind amount">0.4</output> <span class="font-sans text-base text-ink/70">kg CO₂e</span></p>
+            <p class="font-display text-4xl tabular-nums text-spruce"><output id="result-num"
+                for="kind amount">0.4</output> <span class="font-sans text-base text-ink/70">kg CO₂e</span></p>
             <p id="result-context" class="mt-2 text-sm text-ink/80"></p>
             <p id="result-tip" class="mt-1 text-sm font-semibold text-leaf"></p>
           </div>
@@ -235,27 +342,39 @@
           <!-- Geolocation API -->
           <section aria-labelledby="trip-title" class="rounded-xl border border-ink/20 p-5 sm:p-7">
             <h3 id="trip-title" class="font-display text-2xl text-spruce">Measure a trip with GPS</h3>
-            <p class="mt-2 text-sm leading-6 text-ink/80">Start the trip, travel as usual and stop when you arrive. The distance is measured from your device’s position and fills in the form above. Your location stays in this browser and is never sent anywhere.</p>
+            <p class="mt-2 text-sm leading-6 text-ink/80">Start the trip, travel as usual and stop when you arrive. The
+              distance is measured from your device’s position and fills in the form above. Your location stays in this
+              browser and is never sent anywhere.</p>
 
             <div class="mt-5">
               <label for="trip-mode" class="block text-sm font-semibold">Travelling by</label>
-              <select id="trip-mode" class="mt-1.5 block w-full rounded-md border border-ink/30 bg-white px-3 py-2.5 sm:max-w-xs"></select>
+              <select id="trip-mode"
+                class="mt-1.5 block w-full rounded-md border border-ink/30 bg-white px-3 py-2.5 sm:max-w-xs"></select>
             </div>
 
             <div class="mt-4 flex flex-wrap items-center gap-2">
-              <button id="trip-start" type="button" class="rounded-md bg-spruce px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-spruce-deep disabled:cursor-not-allowed disabled:opacity-50">Start trip</button>
-              <button id="trip-stop" type="button" disabled class="rounded-md border border-spruce px-4 py-2.5 text-sm font-bold text-spruce transition-colors hover:bg-sage disabled:cursor-not-allowed disabled:opacity-50">Stop and use distance</button>
-              <button id="trip-demo" type="button" class="rounded-md px-3 py-2.5 text-sm font-semibold text-spruce underline underline-offset-4 hover:bg-sage disabled:cursor-not-allowed disabled:opacity-50">Try a demo walk</button>
+              <button id="trip-start" type="button"
+                class="rounded-md bg-spruce px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-spruce-deep disabled:cursor-not-allowed disabled:opacity-50">Start
+                trip</button>
+              <button id="trip-stop" type="button" disabled
+                class="rounded-md border border-spruce px-4 py-2.5 text-sm font-bold text-spruce transition-colors hover:bg-sage disabled:cursor-not-allowed disabled:opacity-50">Stop
+                and use distance</button>
+              <button id="trip-demo" type="button"
+                class="rounded-md px-3 py-2.5 text-sm font-semibold text-spruce underline underline-offset-4 hover:bg-sage disabled:cursor-not-allowed disabled:opacity-50">Try
+                a demo walk</button>
             </div>
 
             <dl class="mt-5 grid grid-cols-2 gap-4 border-t border-ink/15 pt-4 text-sm sm:grid-cols-3">
               <div>
                 <dt class="text-ink/70">Distance</dt>
-                <dd class="mt-1 font-display text-2xl tabular-nums text-spruce"><output id="trip-distance">0.00</output> <span class="font-sans text-sm text-ink/70">km</span></dd>
+                <dd class="mt-1 font-display text-2xl tabular-nums text-spruce"><output id="trip-distance">0.00</output>
+                  <span class="font-sans text-sm text-ink/70">km</span>
+                </dd>
               </div>
               <div>
                 <dt class="text-ink/70">Time</dt>
-                <dd class="mt-1 font-display text-2xl tabular-nums text-spruce"><output id="trip-time">0:00</output></dd>
+                <dd class="mt-1 font-display text-2xl tabular-nums text-spruce"><output id="trip-time">0:00</output>
+                </dd>
               </div>
               <div class="col-span-2 sm:col-span-1">
                 <dt class="text-ink/70">Position</dt>
@@ -268,16 +387,23 @@
           <!-- Notifications API -->
           <section aria-labelledby="remind-title" class="rounded-xl border border-ink/20 p-5 sm:p-7">
             <h3 id="remind-title" class="font-display text-2xl text-spruce">Daily reminder and budget alerts</h3>
-            <p class="mt-2 text-sm leading-6 text-ink/80">Get a notification at the time you choose if you have not logged anything that day, and an alert when a day goes over the 6.3 kg budget. Notifications appear while this page is open in a browser tab.</p>
+            <p class="mt-2 text-sm leading-6 text-ink/80">Get a notification at the time you choose if you have not
+              logged anything that day, and an alert when a day goes over the 6.3 kg budget. Notifications appear while
+              this page is open in a browser tab.</p>
 
             <div class="mt-5">
               <label for="remind-time" class="block text-sm font-semibold">Remind me at</label>
-              <input id="remind-time" type="time" value="20:00" class="mt-1.5 block w-full rounded-md border border-ink/30 bg-white px-3 py-2.5 sm:max-w-[10rem]" />
+              <input id="remind-time" type="time" value="20:00"
+                class="mt-1.5 block w-full rounded-md border border-ink/30 bg-white px-3 py-2.5 sm:max-w-[10rem]" />
             </div>
 
             <div class="mt-4 flex flex-wrap items-center gap-2">
-              <button id="remind-toggle" type="button" aria-pressed="false" class="rounded-md bg-spruce px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-spruce-deep">Turn on reminders</button>
-              <button id="remind-test" type="button" class="rounded-md border border-spruce px-4 py-2.5 text-sm font-bold text-spruce transition-colors hover:bg-sage">Send a test</button>
+              <button id="remind-toggle" type="button" aria-pressed="false"
+                class="rounded-md bg-spruce px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-spruce-deep">Turn
+                on reminders</button>
+              <button id="remind-test" type="button"
+                class="rounded-md border border-spruce px-4 py-2.5 text-sm font-bold text-spruce transition-colors hover:bg-sage">Send
+                a test</button>
             </div>
             <p id="remind-status" class="mt-4 border-t border-ink/15 pt-4 text-sm text-ink/80" role="status"></p>
           </section>
@@ -294,9 +420,12 @@
             <h2 class="font-display text-3xl text-spruce">Your activity log</h2>
             <p id="log-summary" class="mt-1 text-sm text-ink/80"></p>
 
-            <div id="sample-banner" class="mt-5 hidden flex-wrap items-center justify-between gap-3 rounded-md bg-white px-4 py-3 text-sm">
+            <div id="sample-banner"
+              class="mt-5 hidden flex-wrap items-center justify-between gap-3 rounded-md bg-white px-4 py-3 text-sm">
               <p>These entries are sample data so the charts have something to show.</p>
-              <button id="clear-sample" type="button" class="rounded-md border border-spruce px-3 py-1.5 font-semibold text-spruce hover:bg-sage">Clear sample data</button>
+              <button id="clear-sample" type="button"
+                class="rounded-md border border-spruce px-3 py-1.5 font-semibold text-spruce hover:bg-sage">Clear sample
+                data</button>
             </div>
 
             <div class="relative mt-5 overflow-x-auto rounded-lg border border-ink/15 bg-white">
@@ -314,25 +443,34 @@
                 <tbody id="log-body"></tbody>
               </table>
             </div>
-            <button id="log-more" type="button" class="mt-3 hidden rounded-md px-2 py-1.5 text-sm font-semibold text-spruce underline underline-offset-4 hover:bg-white"></button>
+            <button id="log-more" type="button"
+              class="mt-3 hidden rounded-md px-2 py-1.5 text-sm font-semibold text-spruce underline underline-offset-4 hover:bg-white"></button>
           </div>
 
           <aside aria-labelledby="backup-title" class="min-w-0 lg:pt-1">
             <h3 id="backup-title" class="font-display text-xl text-spruce">Back up or move your log</h3>
-            <p class="mt-2 text-sm leading-6 text-ink/80">Your log is saved in this browser. Download a copy to open it in a spreadsheet or restore it on another device.</p>
+            <p class="mt-2 text-sm leading-6 text-ink/80">Your log is saved in this browser. Download a copy to open it
+              in a spreadsheet or restore it on another device.</p>
             <div class="mt-4 flex flex-wrap gap-2">
-              <button id="export-csv" type="button" class="rounded-md bg-spruce px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-spruce-deep">Download CSV</button>
-              <button id="export-json" type="button" class="rounded-md border border-spruce px-4 py-2.5 text-sm font-bold text-spruce transition-colors hover:bg-white">Download JSON backup</button>
+              <button id="export-csv" type="button"
+                class="rounded-md bg-spruce px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-spruce-deep">Download
+                CSV</button>
+              <button id="export-json" type="button"
+                class="rounded-md border border-spruce px-4 py-2.5 text-sm font-bold text-spruce transition-colors hover:bg-white">Download
+                JSON backup</button>
             </div>
 
-            <label id="dropzone" for="import-file" class="mt-5 flex cursor-pointer flex-col items-center rounded-lg border-2 border-dashed border-ink/30 bg-white px-4 py-8 text-center text-sm transition-colors hover:border-spruce focus-within:outline focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-spruce">
+            <label id="dropzone" for="import-file"
+              class="mt-5 flex cursor-pointer flex-col items-center rounded-lg border-2 border-dashed border-ink/30 bg-white px-4 py-8 text-center text-sm transition-colors hover:border-spruce focus-within:outline focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-spruce">
               <span class="font-semibold text-spruce">Drop a JSON backup here</span>
               <span class="mt-1 text-ink/70">or choose a file</span>
               <input id="import-file" type="file" accept=".json,application/json" class="sr-only" />
             </label>
             <p id="import-status" class="mt-3 min-h-[1.25rem] text-sm text-ink/80" role="status"></p>
 
-            <button id="clear-all" type="button" class="mt-4 rounded-md border border-red-700 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-white">Clear all data</button>
+            <button id="clear-all" type="button"
+              class="mt-4 rounded-md border border-red-700 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-white">Clear
+              all data</button>
           </aside>
         </div>
       </div>
@@ -349,37 +487,47 @@
               <p id="insights-lead"></p>
             </div>
 
-            <dl class="mt-8 grid divide-y divide-ink/15 border-y border-ink/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            <dl
+              class="mt-8 grid divide-y divide-ink/15 border-y border-ink/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
               <div class="py-4 sm:px-4 sm:first:pl-0">
                 <dt class="text-sm text-ink/70">Today</dt>
-                <dd class="mt-1 font-display text-3xl tabular-nums text-spruce"><span id="stat-today">0</span> <span class="font-sans text-sm text-ink/70">kg</span></dd>
+                <dd class="mt-1 font-display text-3xl tabular-nums text-spruce"><span id="stat-today">0</span> <span
+                    class="font-sans text-sm text-ink/70">kg</span></dd>
               </div>
               <div class="py-4 sm:px-4">
                 <dt class="text-sm text-ink/70">Last 30 days</dt>
-                <dd class="mt-1 font-display text-3xl tabular-nums text-spruce"><span id="stat-month">0</span> <span class="font-sans text-sm text-ink/70">kg</span></dd>
+                <dd class="mt-1 font-display text-3xl tabular-nums text-spruce"><span id="stat-month">0</span> <span
+                    class="font-sans text-sm text-ink/70">kg</span></dd>
               </div>
               <div class="py-4 sm:px-4">
                 <dt class="text-sm text-ink/70">Yearly pace</dt>
-                <dd class="mt-1 font-display text-3xl tabular-nums text-spruce"><span id="stat-year">0</span> <span class="font-sans text-sm text-ink/70">t</span></dd>
+                <dd class="mt-1 font-display text-3xl tabular-nums text-spruce"><span id="stat-year">0</span> <span
+                    class="font-sans text-sm text-ink/70">t</span></dd>
               </div>
             </dl>
 
             <div class="mt-6">
-              <label for="budget-meter" class="block text-sm font-semibold">Today against the 6.3 kg daily budget</label>
-              <meter id="budget-meter" class="mt-2" min="0" max="12.6" low="6.3" high="6.3" optimum="0" value="0"></meter>
+              <label for="budget-meter" class="block text-sm font-semibold">Today against the 6.3 kg daily
+                budget</label>
+              <meter id="budget-meter" class="mt-2" min="0" max="12.6" low="6.3" high="6.3" optimum="0"
+                value="0"></meter>
               <p id="budget-text" class="mt-2 text-sm text-ink/80"></p>
             </div>
 
             <div class="mt-6">
-              <button id="share-button" type="button" class="rounded-md border border-spruce px-4 py-2.5 text-sm font-bold text-spruce transition-colors hover:bg-sage">Share my summary</button>
-              <textarea id="share-box" readonly rows="3" aria-label="Summary text to copy" class="mt-3 hidden w-full rounded-md border border-ink/30 bg-white p-3 text-sm"></textarea>
+              <button id="share-button" type="button"
+                class="rounded-md border border-spruce px-4 py-2.5 text-sm font-bold text-spruce transition-colors hover:bg-sage">Share
+                my summary</button>
+              <textarea id="share-box" readonly rows="3" aria-label="Summary text to copy"
+                class="mt-3 hidden w-full rounded-md border border-ink/30 bg-white p-3 text-sm"></textarea>
             </div>
             <p id="worker-status" class="mt-6 text-xs text-ink/70"></p>
           </div>
 
           <div>
             <figure class="mx-auto w-full max-w-[280px]">
-              <canvas id="donut" class="block aspect-square w-full" role="img" aria-label="Donut chart of the last 30 days by category"></canvas>
+              <canvas id="donut" class="block aspect-square w-full" role="img"
+                aria-label="Donut chart of the last 30 days by category"></canvas>
               <figcaption class="sr-only">Share of the last 30 days by category</figcaption>
             </figure>
             <ul id="cat-list" class="mt-8 space-y-5"></ul>
@@ -392,14 +540,22 @@
 
         <figure class="mt-16 border-t border-ink/20 pt-12">
           <figcaption class="font-display text-2xl text-spruce">The last 14 days against your daily budget</figcaption>
-          <canvas id="bars" class="mt-6 block h-56 w-full touch-pan-y sm:h-64" role="img" aria-label="Bar chart of daily emissions for the last 14 days"></canvas>
-          <p id="bars-readout" class="mt-2 min-h-[1.5rem] text-sm text-ink/80">Hover or tap a bar to see that day. Dark bars stayed within budget, amber bars went over.</p>
+          <canvas id="bars" class="mt-6 block h-56 w-full touch-pan-y sm:h-64" role="img"
+            aria-label="Bar chart of daily emissions for the last 14 days"></canvas>
+          <p id="bars-readout" class="mt-2 min-h-[1.5rem] text-sm text-ink/80">Hover or tap a bar to see that day. Dark
+            bars stayed within budget, amber bars went over.</p>
           <details class="mt-3">
             <summary class="cursor-pointer text-sm font-semibold text-spruce">View the same data as a table</summary>
             <div class="relative mt-3 overflow-x-auto">
               <table class="w-full max-w-md text-left text-sm">
                 <caption class="sr-only">Daily emissions for the last 14 days</caption>
-                <thead><tr class="border-b border-ink/15 text-spruce"><th scope="col" class="py-2 pr-4 font-semibold">Day</th><th scope="col" class="py-2 pr-4 text-right font-semibold">kg CO₂e</th><th scope="col" class="py-2 font-semibold">Against budget</th></tr></thead>
+                <thead>
+                  <tr class="border-b border-ink/15 text-spruce">
+                    <th scope="col" class="py-2 pr-4 font-semibold">Day</th>
+                    <th scope="col" class="py-2 pr-4 text-right font-semibold">kg CO₂e</th>
+                    <th scope="col" class="py-2 font-semibold">Against budget</th>
+                  </tr>
+                </thead>
                 <tbody id="bars-table"></tbody>
               </table>
             </div>
@@ -413,23 +569,31 @@
       <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <div class="prose prose-carbon prose-lg max-w-2xl">
           <h2 class="text-3xl">Pick the changes you will actually make</h2>
-          <p>The list is ranked from your own log, biggest saving first. Drag a change into your pledges, or press <strong>Pledge this</strong> if you are on a touch screen or using a keyboard. Drag a pledge back to take it off.</p>
+          <p>The list is ranked from your own log, biggest saving first. Drag a change into your pledges, or press
+            <strong>Pledge this</strong> if you are on a touch screen or using a keyboard. Drag a pledge back to take it
+            off.
+          </p>
         </div>
 
         <div class="mt-10 grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-14">
           <div id="suggest-zone" class="-m-1 min-w-0 rounded-xl p-1">
-            <h3 id="suggest-title" class="font-display text-2xl text-spruce sm:text-3xl">Changes that would cut the most</h3>
+            <h3 id="suggest-title" class="font-display text-2xl text-spruce sm:text-3xl">Changes that would cut the most
+            </h3>
             <!-- Ranked list: numbers are used here because the order is the point -->
-            <ol id="suggest-list" class="mt-6 divide-y divide-ink/20 border-y border-ink/20" aria-labelledby="suggest-title"></ol>
-            <p class="mt-5 text-sm text-ink/80">Savings are estimates for the last 30 days of your log, using illustrative emission factors.</p>
+            <ol id="suggest-list" class="mt-6 divide-y divide-ink/20 border-y border-ink/20"
+              aria-labelledby="suggest-title"></ol>
+            <p class="mt-5 text-sm text-ink/80">Savings are estimates for the last 30 days of your log, using
+              illustrative emission factors.</p>
           </div>
 
-          <aside id="pledge-zone" aria-labelledby="pledge-title" class="min-h-[16rem] self-start rounded-xl border-2 border-dashed border-ink/30 bg-white p-5 sm:p-6 lg:sticky lg:top-24">
+          <aside id="pledge-zone" aria-labelledby="pledge-title"
+            class="min-h-[16rem] self-start rounded-xl border-2 border-dashed border-ink/30 bg-white p-5 sm:p-6 lg:sticky lg:top-24">
             <h3 id="pledge-title" class="font-display text-2xl text-spruce">My pledges</h3>
             <ul id="pledge-list" class="mt-4"></ul>
             <p id="pledge-empty" class="mt-4 text-sm text-ink/70">Drag a change here, or press Pledge this.</p>
             <div id="pledge-total" class="mt-4 hidden border-t-2 border-ink pt-4">
-              <p class="font-display text-3xl tabular-nums text-spruce"><span id="pledge-kg">0</span> <span class="font-sans text-base text-ink/70">kg a month</span></p>
+              <p class="font-display text-3xl tabular-nums text-spruce"><span id="pledge-kg">0</span> <span
+                  class="font-sans text-base text-ink/70">kg a month</span></p>
               <p id="pledge-note" class="mt-1 text-sm text-ink/80"></p>
             </div>
           </aside>
@@ -442,12 +606,14 @@
       <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <div class="prose prose-carbon prose-lg max-w-2xl">
           <h2 class="text-3xl">The HTML5 APIs behind this page</h2>
-          <p>Each API is here because the tracker needs it. The last column runs a feature check in your browser right now.</p>
+          <p>Each API is here because the tracker needs it. The last column runs a feature check in your browser right
+            now.</p>
         </div>
 
         <div class="relative mt-8 overflow-x-auto rounded-lg border border-ink/15">
           <table class="w-full min-w-[46rem] text-left text-sm">
-            <caption class="sr-only">HTML5 APIs used in this application, where to try them, and browser support</caption>
+            <caption class="sr-only">HTML5 APIs used in this application, where to try them, and browser support
+            </caption>
             <thead>
               <tr class="border-b border-ink/15 bg-sage text-spruce">
                 <th scope="col" class="px-4 py-3 font-semibold">API</th>
@@ -459,69 +625,89 @@
             <tbody class="align-top">
               <tr data-api="storage" class="border-b border-ink/10">
                 <th scope="row" class="px-4 py-3 font-semibold">Web Storage</th>
-                <td class="px-4 py-3">localStorage keeps your log, pledges and reminder settings between visits. sessionStorage keeps the unsent form in this tab.</td>
+                <td class="px-4 py-3">localStorage keeps your log, pledges and reminder settings between visits.
+                  sessionStorage keeps the unsent form in this tab.</td>
                 <td class="px-4 py-3">Add an entry, then reload the page.</td>
-                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+                <td class="px-4 py-3"><span data-support></span><span data-note
+                    class="block text-xs text-ink/70"></span></td>
               </tr>
               <tr data-api="geolocation" class="border-b border-ink/10">
                 <th scope="row" class="px-4 py-3 font-semibold">Geolocation</th>
                 <td class="px-4 py-3">Measures the distance of a trip so you do not have to guess kilometres.</td>
                 <td class="px-4 py-3">Log Activity, Measure a trip with GPS.</td>
-                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+                <td class="px-4 py-3"><span data-support></span><span data-note
+                    class="block text-xs text-ink/70"></span></td>
               </tr>
               <tr data-api="canvas" class="border-b border-ink/10">
                 <th scope="row" class="px-4 py-3 font-semibold">Canvas</th>
                 <td class="px-4 py-3">Draws the category donut and the 14-day bar chart with the budget line.</td>
                 <td class="px-4 py-3">Insights. Hover a bar.</td>
-                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+                <td class="px-4 py-3"><span data-support></span><span data-note
+                    class="block text-xs text-ink/70"></span></td>
               </tr>
               <tr data-api="dnd" class="border-b border-ink/10">
                 <th scope="row" class="px-4 py-3 font-semibold">Drag and Drop</th>
-                <td class="px-4 py-3">Moves suggested changes into your pledges and back. Also accepts a backup file dropped on the import area.</td>
+                <td class="px-4 py-3">Moves suggested changes into your pledges and back. Also accepts a backup file
+                  dropped on the import area.</td>
                 <td class="px-4 py-3">Pledges. My Log, import area.</td>
-                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+                <td class="px-4 py-3"><span data-support></span><span data-note
+                    class="block text-xs text-ink/70"></span></td>
               </tr>
               <tr data-api="worker" class="border-b border-ink/10">
                 <th scope="row" class="px-4 py-3 font-semibold">Web Workers</th>
-                <td class="px-4 py-3">Totals your log and ranks the reduction ideas on a background thread, so the page stays responsive with a large log.</td>
+                <td class="px-4 py-3">Totals your log and ranks the reduction ideas on a background thread, so the page
+                  stays responsive with a large log.</td>
                 <td class="px-4 py-3">Insights, note under the stats.</td>
-                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+                <td class="px-4 py-3"><span data-support></span><span data-note
+                    class="block text-xs text-ink/70"></span></td>
               </tr>
               <tr data-api="notifications" class="border-b border-ink/10">
                 <th scope="row" class="px-4 py-3 font-semibold">Notifications</th>
                 <td class="px-4 py-3">Reminds you to log, and warns when a day goes over budget.</td>
                 <td class="px-4 py-3">Log Activity, Daily reminder.</td>
-                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+                <td class="px-4 py-3"><span data-support></span><span data-note
+                    class="block text-xs text-ink/70"></span></td>
               </tr>
               <tr data-api="file" class="border-b border-ink/10">
                 <th scope="row" class="px-4 py-3 font-semibold">File API with Blob and URL</th>
-                <td class="px-4 py-3">FileReader reads an imported backup. Blob and object URLs build the CSV and JSON downloads.</td>
+                <td class="px-4 py-3">FileReader reads an imported backup. Blob and object URLs build the CSV and JSON
+                  downloads.</td>
                 <td class="px-4 py-3">My Log, Back up or move your log.</td>
-                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+                <td class="px-4 py-3"><span data-support></span><span data-note
+                    class="block text-xs text-ink/70"></span></td>
               </tr>
               <tr data-api="share" class="border-b border-ink/10">
                 <th scope="row" class="px-4 py-3 font-semibold">Web Share and Clipboard</th>
                 <td class="px-4 py-3">Shares your 30-day summary through the phone’s share sheet, or copies it.</td>
                 <td class="px-4 py-3">Insights, Share my summary.</td>
-                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+                <td class="px-4 py-3"><span data-support></span><span data-note
+                    class="block text-xs text-ink/70"></span></td>
               </tr>
               <tr data-api="validation" class="border-b border-ink/10">
                 <th scope="row" class="px-4 py-3 font-semibold">Constraint Validation</th>
-                <td class="px-4 py-3">Checks the amount and date with the browser’s validity states, then shows plain-language messages.</td>
+                <td class="px-4 py-3">Checks the amount and date with the browser’s validity states, then shows
+                  plain-language messages.</td>
                 <td class="px-4 py-3">Clear the amount, or type a very large one.</td>
-                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+                <td class="px-4 py-3"><span data-support></span><span data-note
+                    class="block text-xs text-ink/70"></span></td>
               </tr>
               <tr data-api="observer">
                 <th scope="row" class="px-4 py-3 font-semibold">Intersection Observer</th>
                 <td class="px-4 py-3">Highlights the current section in the navigation as you scroll.</td>
                 <td class="px-4 py-3">Scroll the page.</td>
-                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+                <td class="px-4 py-3"><span data-support></span><span data-note
+                    class="block text-xs text-ink/70"></span></td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <p class="mt-6 max-w-3xl text-sm leading-6 text-ink/80">Semantic HTML5 elements used: <code>header</code>, <code>nav</code>, <code>main</code>, <code>section</code>, <code>aside</code>, <code>footer</code>, <code>figure</code> and <code>figcaption</code>, <code>time</code>, <code>output</code>, <code>meter</code>, <code>details</code> and <code>summary</code>, <code>dialog</code>, and the <code>date</code>, <code>time</code>, <code>number</code> and <code>file</code> input types.</p>
+        <p class="mt-6 max-w-3xl text-sm leading-6 text-ink/80">Semantic HTML5 elements used: <code>header</code>,
+          <code>nav</code>, <code>main</code>, <code>section</code>, <code>aside</code>, <code>footer</code>,
+          <code>figure</code> and <code>figcaption</code>, <code>time</code>, <code>output</code>, <code>meter</code>,
+          <code>details</code> and <code>summary</code>, <code>dialog</code>, and the <code>date</code>,
+          <code>time</code>, <code>number</code> and <code>file</code> input types.
+        </p>
       </div>
     </section>
   </main>
@@ -531,7 +717,8 @@
     <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
         <h2 class="font-display text-xl text-white">CarbonFootprint India</h2>
-        <p class="mt-3 max-w-sm text-sm leading-6">A student project for tracking everyday emissions and encouraging practical climate action.</p>
+        <p class="mt-3 max-w-sm text-sm leading-6">A student project for tracking everyday emissions and encouraging
+          practical climate action.</p>
       </div>
       <div>
         <h3 class="font-semibold text-white">Explore</h3>
@@ -544,23 +731,31 @@
       </div>
       <div>
         <h3 class="font-semibold text-white">About the numbers</h3>
-        <p class="mt-3 text-sm leading-6">Emission factors are illustrative values for this exercise. A production version would calculate from verified factors. Everything you log stays in your browser.</p>
+        <p class="mt-3 text-sm leading-6">Emission factors are illustrative values for this exercise. A production
+          version would calculate from verified factors. Everything you log stays in your browser.</p>
       </div>
     </div>
-    <div class="border-t border-white/10 px-4 py-5 text-center text-xs text-white/70">© 2026 CarbonFootprint India · Sustainability &amp; Environment</div>
+    <div class="border-t border-white/10 px-4 py-5 text-center text-xs text-white/70">© 2026 CarbonFootprint India ·
+      Sustainability &amp; Environment</div>
   </footer>
 
   <!-- Live message area (used for confirmations, reminders and errors) -->
-  <div id="toast" role="status" aria-live="polite" class="pointer-events-none fixed inset-x-4 bottom-4 z-[70] mx-auto hidden max-w-md rounded-md bg-ink px-4 py-3 text-center text-sm font-semibold text-white shadow-lg"></div>
+  <div id="toast" role="status" aria-live="polite"
+    class="pointer-events-none fixed inset-x-4 bottom-4 z-[70] mx-auto hidden max-w-md rounded-md bg-ink px-4 py-3 text-center text-sm font-semibold text-white shadow-lg">
+  </div>
 
   <!-- Native <dialog> for the destructive action -->
   <dialog id="confirm-dialog" class="m-auto w-[calc(100%-2rem)] max-w-sm rounded-xl p-6 text-ink backdrop:bg-ink/60">
     <form method="dialog">
       <h2 class="font-display text-2xl text-spruce">Clear all data?</h2>
-      <p class="mt-2 text-sm leading-6">This removes every logged activity and pledge from this browser. Download a backup first if you want to keep them.</p>
+      <p class="mt-2 text-sm leading-6">This removes every logged activity and pledge from this browser. Download a
+        backup first if you want to keep them.</p>
       <div class="mt-6 flex justify-end gap-2">
-        <button value="cancel" class="rounded-md border border-ink/30 px-4 py-2 text-sm font-semibold hover:bg-sage">Keep my data</button>
-        <button value="confirm" class="rounded-md bg-red-700 px-4 py-2 text-sm font-bold text-white hover:bg-red-800">Clear everything</button>
+        <button value="cancel"
+          class="rounded-md border border-ink/30 px-4 py-2 text-sm font-semibold hover:bg-sage">Keep my data</button>
+        <button value="confirm"
+          class="rounded-md bg-red-700 px-4 py-2 text-sm font-bold text-white hover:bg-red-800">Clear
+          everything</button>
       </div>
     </form>
   </dialog>
@@ -1793,4 +1988,5 @@
     setInterval(() => { if (toStr(new Date()) !== $('#receipt-date').getAttribute('datetime')) { dateInput.value = todayStr(); validateDate(); refreshAll(); } }, 60000);
   </script>
 </body>
+
 </html>
