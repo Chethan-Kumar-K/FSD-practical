@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth motion-reduce:scroll-auto">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CarbonFootprint India turns your travel, electricity, food and shopping into a running carbon total and shows which changes cut it most." />
+  <title>CarbonFootprint India | Dashboard</title>
+
+  <!-- Fonts: Young Serif for headings and big numbers, Hanken Grotesk for everything else -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN with the official Typography plugin (?plugins=typography) -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Hanken Grotesk"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            display: ['"Young Serif"', 'Georgia', 'serif']
+          },
+          colors: {
+            ink: '#17302D',
+            spruce: { DEFAULT: '#0F4C47', deep: '#0A3532' },
+            marigold: { DEFAULT: '#F2A900', deep: '#8F5F00' },
+            sage: { DEFAULT: '#EAF1EC', dark: '#D5E2DA' },
+            leaf: '#2F7D57'
+          },
+          // Custom Typography themes: "prose-carbon" for light backgrounds, "prose-hero" for the dark hero
+          typography: {
+            carbon: {
+              css: {
+                '--tw-prose-body': '#17302D',
+                '--tw-prose-headings': '#0F4C47',
+                '--tw-prose-lead': '#2B4A46',
+                '--tw-prose-links': '#0F4C47',
+                '--tw-prose-bold': '#0F4C47',
+                '--tw-prose-counters': '#0F4C47',
+                '--tw-prose-bullets': '#F2A900',
+                '--tw-prose-hr': '#D5E2DA',
+                '--tw-prose-quotes': '#0F4C47',
+                '--tw-prose-quote-borders': '#F2A900',
+                'h1, h2, h3': { fontFamily: '"Young Serif", Georgia, serif', fontWeight: '400', letterSpacing: '-0.01em' }
+              }
+            },
+            hero: {
+              css: {
+                '--tw-prose-body': '#D5E8E2',
+                '--tw-prose-headings': '#FFFFFF',
+                '--tw-prose-lead': '#D5E8E2',
+                '--tw-prose-links': '#F2A900',
+                '--tw-prose-bold': '#FFFFFF',
+                '--tw-prose-bullets': '#F2A900',
+                'h1, h2, h3': { fontFamily: '"Young Serif", Georgia, serif', fontWeight: '400', letterSpacing: '-0.01em' }
+              }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Visible keyboard focus: dark ring on light areas, marigold ring on dark areas */
+    :focus-visible { outline: 3px solid #0F4C47; outline-offset: 3px; }
+    .on-dark :focus-visible { outline-color: #F2A900; }
+
+    /* <meter> styled to the palette: green within budget, dark amber once over it */
+    meter { appearance: none; -webkit-appearance: none; display: block; width: 100%; height: 0.75rem; border: 0; border-radius: 2px; background: #fff; }
+    meter::-webkit-meter-bar { height: 0.75rem; border: 0; border-radius: 2px; background: #fff; box-shadow: inset 0 0 0 1px rgba(23, 48, 45, .18); }
+    meter::-webkit-meter-optimum-value { border-radius: 2px; background: #2F7D57; }
+    meter::-webkit-meter-suboptimum-value { border-radius: 2px; background: #F2A900; }
+    meter::-webkit-meter-even-less-good-value { border-radius: 2px; background: #B45309; }
+    meter::-moz-meter-bar { background: #2F7D57; }
+    meter:-moz-meter-sub-optimum::-moz-meter-bar { background: #F2A900; }
+    meter:-moz-meter-sub-sub-optimum::-moz-meter-bar { background: #B45309; }
+
+    /* Drag and Drop feedback */
+    .drop-active { outline: 3px dashed #0F4C47; outline-offset: -3px; background-color: #D5E2DA; }
+    .is-dragging { opacity: .45; }
+    [draggable="true"] { cursor: grab; }
+  </style>
+</head>
+<body class="bg-white font-sans text-ink antialiased">
+
+  <!-- Skip link for keyboard and screen-reader users -->
+  <a href="#main" class="sr-only rounded-md bg-white px-4 py-2 font-semibold text-spruce focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60]">Skip to main content</a>
+
+  <!-- Header with navigation. Sticky, so the navigation stays in reach while scrolling. -->
+  <header class="sticky top-0 z-50 border-b border-ink/10 bg-white/95 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+      <a href="#home" class="flex items-center gap-3" aria-label="CarbonFootprint India, home">
+        <svg class="h-9 w-9 shrink-0" viewBox="0 0 36 36" aria-hidden="true">
+          <rect width="36" height="36" rx="8" fill="#0F4C47" />
+          <path d="M11 9h14v18l-3.5-2.5L18 27l-3.5-2.5L11 27V9Z" fill="#fff" />
+          <path d="M14 14h8M14 18h8" stroke="#0F4C47" stroke-width="1.8" stroke-linecap="round" />
+          <circle cx="26" cy="26" r="5" fill="#F2A900" />
+        </svg>
+        <span>
+          <span class="block font-display text-lg leading-tight text-spruce">CarbonFootprint India</span>
+          <span class="hidden text-xs text-ink/70 sm:block">Track. Understand. Reduce.</span>
+        </span>
+      </a>
+
+      <button id="menuButton" type="button" class="rounded-md border border-ink/20 p-2 text-spruce hover:bg-sage lg:hidden" aria-label="Open navigation menu" aria-controls="mainNav" aria-expanded="false">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <nav id="mainNav" class="absolute inset-x-0 top-full hidden border-b border-ink/10 bg-white px-4 pb-4 pt-2 shadow-lg lg:static lg:block lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none" aria-label="Main navigation">
+        <ul class="flex flex-col gap-1 lg:flex-row lg:items-center lg:gap-1">
+          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3" href="#home" aria-current="true">Home</a></li>
+          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3" href="#activities">Log Activity</a></li>
+          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3" href="#log">My Log</a></li>
+          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3" href="#insights">Insights</a></li>
+          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3" href="#pledges">Pledges</a></li>
+          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3" href="#apis">HTML5 APIs</a></li>
+          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce lg:py-3" href="#about">About</a></li>
+          <li class="lg:hidden xl:block"><a class="mt-2 block rounded-md bg-spruce px-4 py-2.5 text-center text-sm font-bold text-white transition-colors hover:bg-spruce-deep lg:mt-0 lg:ml-2" href="#activities">Start tracking</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- Hero: headline plus a live "carbon receipt" built from today's log -->
+    <section id="home" class="on-dark bg-spruce text-white">
+      <div class="mx-auto grid max-w-6xl gap-12 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:px-8 lg:py-24">
+
+        <div class="prose prose-hero prose-lg max-w-xl">
+          <h1 class="text-4xl leading-[1.08] sm:text-5xl lg:text-6xl">Your day has a carbon bill. See it, then cut the biggest line.</h1>
+          <p class="mt-6 text-lg">CarbonFootprint India turns your travel, electricity, food and shopping into a running total, and shows which changes cut it most.</p>
+          <!-- not-prose stops the Typography plugin from underlining the button links -->
+          <div class="not-prose mt-8 flex flex-wrap gap-3">
+            <a href="#activities" class="rounded-md bg-marigold px-6 py-3 font-bold text-spruce-deep transition-colors hover:bg-white">Log today’s activity</a>
+            <a href="#insights" class="rounded-md border border-white/40 px-6 py-3 font-bold text-white transition-colors hover:bg-white/10">See where a month goes</a>
+          </div>
+        </div>
+
+        <!-- The receipt: filled from today's entries in the log -->
+        <section aria-labelledby="receipt-title" class="mx-auto w-full max-w-md text-ink drop-shadow-xl lg:ml-auto">
+          <div class="bg-white px-6 pt-7 sm:px-8">
+            <div class="flex items-baseline justify-between gap-4">
+              <h2 id="receipt-title" class="font-display text-2xl text-spruce">Your carbon receipt</h2>
+              <p class="text-sm text-ink/70"><time id="receipt-date" datetime="">Today</time></p>
+            </div>
+
+            <ul id="receipt-lines" class="mt-6 space-y-3 text-[15px]"></ul>
+
+            <div class="mt-6 flex items-baseline justify-between border-t-2 border-ink pt-4">
+              <p class="font-semibold">Total today</p>
+              <p class="font-display text-4xl tabular-nums text-spruce"><span id="receipt-total">0</span> <span class="font-sans text-base text-ink/70">kg CO₂e</span></p>
+            </div>
+            <p id="receipt-note" class="mt-3 pb-7 text-sm text-ink/80"></p>
+          </div>
+          <!-- Torn paper edge -->
+          <svg class="block h-3 w-full" aria-hidden="true">
+            <defs><pattern id="teeth" width="16" height="12" patternUnits="userSpaceOnUse"><path d="M0 0H16L8 12Z" fill="#fff" /></pattern></defs>
+            <rect width="100%" height="12" fill="url(#teeth)" />
+          </svg>
+        </section>
+      </div>
+    </section>
+
+    <!-- Log an activity: estimator, GPS trip tracker and reminders -->
+    <section id="activities" class="scroll-mt-20 border-b border-ink/10 bg-white">
+      <div class="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-5 lg:gap-14 lg:px-8 lg:pb-12 lg:pt-20">
+
+        <div class="prose prose-carbon prose-lg lg:col-span-2">
+          <h2 class="text-3xl">Log an activity and see what it costs in carbon</h2>
+          <p>Pick a category, choose what you did and enter how much. The estimate updates as you type and uses everyday Indian conditions: two-wheelers, auto-rickshaws, the metro and LPG cooking gas.</p>
+          <p class="text-base">Emission factors here are illustrative. A production version would use verified figures.</p>
+        </div>
+
+        <form id="estimator" class="rounded-xl border border-ink/20 bg-sage p-5 sm:p-7 lg:col-span-3" novalidate>
+          <fieldset>
+            <legend class="text-sm font-semibold">Category</legend>
+            <div class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
+              <div>
+                <input class="peer sr-only" type="radio" name="category" id="cat-travel" value="travel" checked />
+                <label for="cat-travel" class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Travel</label>
+              </div>
+              <div>
+                <input class="peer sr-only" type="radio" name="category" id="cat-energy" value="energy" />
+                <label for="cat-energy" class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Home energy</label>
+              </div>
+              <div>
+                <input class="peer sr-only" type="radio" name="category" id="cat-food" value="food" />
+                <label for="cat-food" class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Food</label>
+              </div>
+              <div>
+                <input class="peer sr-only" type="radio" name="category" id="cat-shopping" value="shopping" />
+                <label for="cat-shopping" class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Shopping</label>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="mt-6 grid gap-4 sm:grid-cols-2">
+            <div>
+              <label for="kind" class="block text-sm font-semibold">What did you do?</label>
+              <select id="kind" class="mt-1.5 block w-full rounded-md border border-ink/30 bg-white px-3 py-2.5"></select>
+            </div>
+            <div>
+              <label for="amount" class="block text-sm font-semibold">How much?</label>
+              <div class="mt-1.5 flex">
+                <input id="amount" type="number" min="0.01" step="any" inputmode="decimal" value="10" required aria-describedby="amount-error" class="block w-full min-w-0 rounded-l-md border border-ink/30 bg-white px-3 py-2.5 aria-[invalid=true]:border-red-700" />
+                <span id="unit" class="inline-flex items-center rounded-r-md border border-l-0 border-ink/30 bg-white px-3 text-sm text-ink/70">km</span>
+              </div>
+              <p id="amount-error" class="mt-1.5 text-sm font-semibold text-red-700" role="alert"></p>
+            </div>
+            <div>
+              <label for="entry-date" class="block text-sm font-semibold">Date</label>
+              <input id="entry-date" type="date" required aria-describedby="date-error" class="mt-1.5 block w-full rounded-md border border-ink/30 bg-white px-3 py-2.5 aria-[invalid=true]:border-red-700" />
+              <p id="date-error" class="mt-1.5 text-sm font-semibold text-red-700" role="alert"></p>
+            </div>
+            <div class="sm:self-start sm:pt-[1.625rem]">
+              <button id="add-button" type="submit" class="w-full rounded-md bg-spruce px-5 py-2.5 text-center font-bold text-white transition-colors hover:bg-spruce-deep">Add to my log</button>
+            </div>
+          </div>
+
+          <div class="mt-6 rounded-lg bg-white p-5" aria-live="polite">
+            <p class="font-display text-4xl tabular-nums text-spruce"><output id="result-num" for="kind amount">0.4</output> <span class="font-sans text-base text-ink/70">kg CO₂e</span></p>
+            <p id="result-context" class="mt-2 text-sm text-ink/80"></p>
+            <p id="result-tip" class="mt-1 text-sm font-semibold text-leaf"></p>
+          </div>
+        </form>
+      </div>
+
+      <div class="mx-auto max-w-6xl px-4 pb-16 sm:px-6 lg:px-8 lg:pb-20">
+        <div class="grid gap-6 md:grid-cols-2">
+
+          <!-- Geolocation API -->
+          <section aria-labelledby="trip-title" class="rounded-xl border border-ink/20 p-5 sm:p-7">
+            <h3 id="trip-title" class="font-display text-2xl text-spruce">Measure a trip with GPS</h3>
+            <p class="mt-2 text-sm leading-6 text-ink/80">Start the trip, travel as usual and stop when you arrive. The distance is measured from your device’s position and fills in the form above. Your location stays in this browser and is never sent anywhere.</p>
+
+            <div class="mt-5">
+              <label for="trip-mode" class="block text-sm font-semibold">Travelling by</label>
+              <select id="trip-mode" class="mt-1.5 block w-full rounded-md border border-ink/30 bg-white px-3 py-2.5 sm:max-w-xs"></select>
+            </div>
+
+            <div class="mt-4 flex flex-wrap items-center gap-2">
+              <button id="trip-start" type="button" class="rounded-md bg-spruce px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-spruce-deep disabled:cursor-not-allowed disabled:opacity-50">Start trip</button>
+              <button id="trip-stop" type="button" disabled class="rounded-md border border-spruce px-4 py-2.5 text-sm font-bold text-spruce transition-colors hover:bg-sage disabled:cursor-not-allowed disabled:opacity-50">Stop and use distance</button>
+              <button id="trip-demo" type="button" class="rounded-md px-3 py-2.5 text-sm font-semibold text-spruce underline underline-offset-4 hover:bg-sage disabled:cursor-not-allowed disabled:opacity-50">Try a demo walk</button>
+            </div>
+
+            <dl class="mt-5 grid grid-cols-2 gap-4 border-t border-ink/15 pt-4 text-sm sm:grid-cols-3">
+              <div>
+                <dt class="text-ink/70">Distance</dt>
+                <dd class="mt-1 font-display text-2xl tabular-nums text-spruce"><output id="trip-distance">0.00</output> <span class="font-sans text-sm text-ink/70">km</span></dd>
+              </div>
+              <div>
+                <dt class="text-ink/70">Time</dt>
+                <dd class="mt-1 font-display text-2xl tabular-nums text-spruce"><output id="trip-time">0:00</output></dd>
+              </div>
+              <div class="col-span-2 sm:col-span-1">
+                <dt class="text-ink/70">Position</dt>
+                <dd class="mt-1 break-words text-xs leading-5"><output id="trip-pos">Not started</output></dd>
+              </div>
+            </dl>
+            <p id="trip-status" class="mt-3 min-h-[1.25rem] text-sm text-ink/80" role="status"></p>
+          </section>
+
+          <!-- Notifications API -->
+          <section aria-labelledby="remind-title" class="rounded-xl border border-ink/20 p-5 sm:p-7">
+            <h3 id="remind-title" class="font-display text-2xl text-spruce">Daily reminder and budget alerts</h3>
+            <p class="mt-2 text-sm leading-6 text-ink/80">Get a notification at the time you choose if you have not logged anything that day, and an alert when a day goes over the 6.3 kg budget. Notifications appear while this page is open in a browser tab.</p>
+
+            <div class="mt-5">
+              <label for="remind-time" class="block text-sm font-semibold">Remind me at</label>
+              <input id="remind-time" type="time" value="20:00" class="mt-1.5 block w-full rounded-md border border-ink/30 bg-white px-3 py-2.5 sm:max-w-[10rem]" />
+            </div>
+
+            <div class="mt-4 flex flex-wrap items-center gap-2">
+              <button id="remind-toggle" type="button" aria-pressed="false" class="rounded-md bg-spruce px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-spruce-deep">Turn on reminders</button>
+              <button id="remind-test" type="button" class="rounded-md border border-spruce px-4 py-2.5 text-sm font-bold text-spruce transition-colors hover:bg-sage">Send a test</button>
+            </div>
+            <p id="remind-status" class="mt-4 border-t border-ink/15 pt-4 text-sm text-ink/80" role="status"></p>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- My log: stored with Web Storage, exported and imported with the File API -->
+    <section id="log" class="scroll-mt-20 border-b border-ink/10 bg-sage">
+      <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <div class="grid gap-10 lg:grid-cols-3 lg:gap-14">
+
+          <div class="min-w-0 lg:col-span-2">
+            <h2 class="font-display text-3xl text-spruce">Your activity log</h2>
+            <p id="log-summary" class="mt-1 text-sm text-ink/80"></p>
+
+            <div id="sample-banner" class="mt-5 hidden flex-wrap items-center justify-between gap-3 rounded-md bg-white px-4 py-3 text-sm">
+              <p>These entries are sample data so the charts have something to show.</p>
+              <button id="clear-sample" type="button" class="rounded-md border border-spruce px-3 py-1.5 font-semibold text-spruce hover:bg-sage">Clear sample data</button>
+            </div>
+
+            <div class="relative mt-5 overflow-x-auto rounded-lg border border-ink/15 bg-white">
+              <table class="w-full min-w-[32rem] text-left text-sm">
+                <caption class="sr-only">Logged activities, newest first</caption>
+                <thead>
+                  <tr class="border-b border-ink/15 text-spruce">
+                    <th scope="col" class="px-4 py-3 font-semibold">Date</th>
+                    <th scope="col" class="px-4 py-3 font-semibold">Activity</th>
+                    <th scope="col" class="px-4 py-3 text-right font-semibold">Amount</th>
+                    <th scope="col" class="px-4 py-3 text-right font-semibold">kg CO₂e</th>
+                    <th scope="col" class="px-4 py-3"><span class="sr-only">Actions</span></th>
+                  </tr>
+                </thead>
+                <tbody id="log-body"></tbody>
+              </table>
+            </div>
+            <button id="log-more" type="button" class="mt-3 hidden rounded-md px-2 py-1.5 text-sm font-semibold text-spruce underline underline-offset-4 hover:bg-white"></button>
+          </div>
+
+          <aside aria-labelledby="backup-title" class="min-w-0 lg:pt-1">
+            <h3 id="backup-title" class="font-display text-xl text-spruce">Back up or move your log</h3>
+            <p class="mt-2 text-sm leading-6 text-ink/80">Your log is saved in this browser. Download a copy to open it in a spreadsheet or restore it on another device.</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <button id="export-csv" type="button" class="rounded-md bg-spruce px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-spruce-deep">Download CSV</button>
+              <button id="export-json" type="button" class="rounded-md border border-spruce px-4 py-2.5 text-sm font-bold text-spruce transition-colors hover:bg-white">Download JSON backup</button>
+            </div>
+
+            <label id="dropzone" for="import-file" class="mt-5 flex cursor-pointer flex-col items-center rounded-lg border-2 border-dashed border-ink/30 bg-white px-4 py-8 text-center text-sm transition-colors hover:border-spruce focus-within:outline focus-within:outline-[3px] focus-within:outline-offset-2 focus-within:outline-spruce">
+              <span class="font-semibold text-spruce">Drop a JSON backup here</span>
+              <span class="mt-1 text-ink/70">or choose a file</span>
+              <input id="import-file" type="file" accept=".json,application/json" class="sr-only" />
+            </label>
+            <p id="import-status" class="mt-3 min-h-[1.25rem] text-sm text-ink/80" role="status"></p>
+
+            <button id="clear-all" type="button" class="mt-4 rounded-md border border-red-700 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-white">Clear all data</button>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Insights: canvas charts drawn from the log -->
+    <section id="insights" class="scroll-mt-20 bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <div class="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
+
+          <div>
+            <div class="prose prose-carbon prose-lg">
+              <h2 id="insights-title" class="text-3xl">Where your last 30 days came from</h2>
+              <p id="insights-lead"></p>
+            </div>
+
+            <dl class="mt-8 grid divide-y divide-ink/15 border-y border-ink/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+              <div class="py-4 sm:px-4 sm:first:pl-0">
+                <dt class="text-sm text-ink/70">Today</dt>
+                <dd class="mt-1 font-display text-3xl tabular-nums text-spruce"><span id="stat-today">0</span> <span class="font-sans text-sm text-ink/70">kg</span></dd>
+              </div>
+              <div class="py-4 sm:px-4">
+                <dt class="text-sm text-ink/70">Last 30 days</dt>
+                <dd class="mt-1 font-display text-3xl tabular-nums text-spruce"><span id="stat-month">0</span> <span class="font-sans text-sm text-ink/70">kg</span></dd>
+              </div>
+              <div class="py-4 sm:px-4">
+                <dt class="text-sm text-ink/70">Yearly pace</dt>
+                <dd class="mt-1 font-display text-3xl tabular-nums text-spruce"><span id="stat-year">0</span> <span class="font-sans text-sm text-ink/70">t</span></dd>
+              </div>
+            </dl>
+
+            <div class="mt-6">
+              <label for="budget-meter" class="block text-sm font-semibold">Today against the 6.3 kg daily budget</label>
+              <meter id="budget-meter" class="mt-2" min="0" max="12.6" low="6.3" high="6.3" optimum="0" value="0"></meter>
+              <p id="budget-text" class="mt-2 text-sm text-ink/80"></p>
+            </div>
+
+            <div class="mt-6">
+              <button id="share-button" type="button" class="rounded-md border border-spruce px-4 py-2.5 text-sm font-bold text-spruce transition-colors hover:bg-sage">Share my summary</button>
+              <textarea id="share-box" readonly rows="3" aria-label="Summary text to copy" class="mt-3 hidden w-full rounded-md border border-ink/30 bg-white p-3 text-sm"></textarea>
+            </div>
+            <p id="worker-status" class="mt-6 text-xs text-ink/70"></p>
+          </div>
+
+          <div>
+            <figure class="mx-auto w-full max-w-[280px]">
+              <canvas id="donut" class="block aspect-square w-full" role="img" aria-label="Donut chart of the last 30 days by category"></canvas>
+              <figcaption class="sr-only">Share of the last 30 days by category</figcaption>
+            </figure>
+            <ul id="cat-list" class="mt-8 space-y-5"></ul>
+            <div class="mt-6 flex items-baseline justify-between border-t-2 border-ink pt-3">
+              <p class="font-semibold">Total, last 30 days</p>
+              <p class="font-display text-2xl tabular-nums text-spruce"><span id="cat-total">0</span> kg</p>
+            </div>
+          </div>
+        </div>
+
+        <figure class="mt-16 border-t border-ink/20 pt-12">
+          <figcaption class="font-display text-2xl text-spruce">The last 14 days against your daily budget</figcaption>
+          <canvas id="bars" class="mt-6 block h-56 w-full touch-pan-y sm:h-64" role="img" aria-label="Bar chart of daily emissions for the last 14 days"></canvas>
+          <p id="bars-readout" class="mt-2 min-h-[1.5rem] text-sm text-ink/80">Hover or tap a bar to see that day. Dark bars stayed within budget, amber bars went over.</p>
+          <details class="mt-3">
+            <summary class="cursor-pointer text-sm font-semibold text-spruce">View the same data as a table</summary>
+            <div class="relative mt-3 overflow-x-auto">
+              <table class="w-full max-w-md text-left text-sm">
+                <caption class="sr-only">Daily emissions for the last 14 days</caption>
+                <thead><tr class="border-b border-ink/15 text-spruce"><th scope="col" class="py-2 pr-4 font-semibold">Day</th><th scope="col" class="py-2 pr-4 text-right font-semibold">kg CO₂e</th><th scope="col" class="py-2 font-semibold">Against budget</th></tr></thead>
+                <tbody id="bars-table"></tbody>
+              </table>
+            </div>
+          </details>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Pledges: Drag and Drop -->
+    <section id="pledges" class="scroll-mt-20 bg-sage">
+      <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <div class="prose prose-carbon prose-lg max-w-2xl">
+          <h2 class="text-3xl">Pick the changes you will actually make</h2>
+          <p>The list is ranked from your own log, biggest saving first. Drag a change into your pledges, or press <strong>Pledge this</strong> if you are on a touch screen or using a keyboard. Drag a pledge back to take it off.</p>
+        </div>
+
+        <div class="mt-10 grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-14">
+          <div id="suggest-zone" class="-m-1 min-w-0 rounded-xl p-1">
+            <h3 id="suggest-title" class="font-display text-2xl text-spruce sm:text-3xl">Changes that would cut the most</h3>
+            <!-- Ranked list: numbers are used here because the order is the point -->
+            <ol id="suggest-list" class="mt-6 divide-y divide-ink/20 border-y border-ink/20" aria-labelledby="suggest-title"></ol>
+            <p class="mt-5 text-sm text-ink/80">Savings are estimates for the last 30 days of your log, using illustrative emission factors.</p>
+          </div>
+
+          <aside id="pledge-zone" aria-labelledby="pledge-title" class="min-h-[16rem] self-start rounded-xl border-2 border-dashed border-ink/30 bg-white p-5 sm:p-6 lg:sticky lg:top-24">
+            <h3 id="pledge-title" class="font-display text-2xl text-spruce">My pledges</h3>
+            <ul id="pledge-list" class="mt-4"></ul>
+            <p id="pledge-empty" class="mt-4 text-sm text-ink/70">Drag a change here, or press Pledge this.</p>
+            <div id="pledge-total" class="mt-4 hidden border-t-2 border-ink pt-4">
+              <p class="font-display text-3xl tabular-nums text-spruce"><span id="pledge-kg">0</span> <span class="font-sans text-base text-ink/70">kg a month</span></p>
+              <p id="pledge-note" class="mt-1 text-sm text-ink/80"></p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- HTML5 APIs used: a live checklist with feature detection -->
+    <section id="apis" class="scroll-mt-20 bg-white">
+      <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <div class="prose prose-carbon prose-lg max-w-2xl">
+          <h2 class="text-3xl">The HTML5 APIs behind this page</h2>
+          <p>Each API is here because the tracker needs it. The last column runs a feature check in your browser right now.</p>
+        </div>
+
+        <div class="relative mt-8 overflow-x-auto rounded-lg border border-ink/15">
+          <table class="w-full min-w-[46rem] text-left text-sm">
+            <caption class="sr-only">HTML5 APIs used in this application, where to try them, and browser support</caption>
+            <thead>
+              <tr class="border-b border-ink/15 bg-sage text-spruce">
+                <th scope="col" class="px-4 py-3 font-semibold">API</th>
+                <th scope="col" class="px-4 py-3 font-semibold">What it does here</th>
+                <th scope="col" class="px-4 py-3 font-semibold">Where to try it</th>
+                <th scope="col" class="px-4 py-3 font-semibold">In this browser</th>
+              </tr>
+            </thead>
+            <tbody class="align-top">
+              <tr data-api="storage" class="border-b border-ink/10">
+                <th scope="row" class="px-4 py-3 font-semibold">Web Storage</th>
+                <td class="px-4 py-3">localStorage keeps your log, pledges and reminder settings between visits. sessionStorage keeps the unsent form in this tab.</td>
+                <td class="px-4 py-3">Add an entry, then reload the page.</td>
+                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+              </tr>
+              <tr data-api="geolocation" class="border-b border-ink/10">
+                <th scope="row" class="px-4 py-3 font-semibold">Geolocation</th>
+                <td class="px-4 py-3">Measures the distance of a trip so you do not have to guess kilometres.</td>
+                <td class="px-4 py-3">Log Activity, Measure a trip with GPS.</td>
+                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+              </tr>
+              <tr data-api="canvas" class="border-b border-ink/10">
+                <th scope="row" class="px-4 py-3 font-semibold">Canvas</th>
+                <td class="px-4 py-3">Draws the category donut and the 14-day bar chart with the budget line.</td>
+                <td class="px-4 py-3">Insights. Hover a bar.</td>
+                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+              </tr>
+              <tr data-api="dnd" class="border-b border-ink/10">
+                <th scope="row" class="px-4 py-3 font-semibold">Drag and Drop</th>
+                <td class="px-4 py-3">Moves suggested changes into your pledges and back. Also accepts a backup file dropped on the import area.</td>
+                <td class="px-4 py-3">Pledges. My Log, import area.</td>
+                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+              </tr>
+              <tr data-api="worker" class="border-b border-ink/10">
+                <th scope="row" class="px-4 py-3 font-semibold">Web Workers</th>
+                <td class="px-4 py-3">Totals your log and ranks the reduction ideas on a background thread, so the page stays responsive with a large log.</td>
+                <td class="px-4 py-3">Insights, note under the stats.</td>
+                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+              </tr>
+              <tr data-api="notifications" class="border-b border-ink/10">
+                <th scope="row" class="px-4 py-3 font-semibold">Notifications</th>
+                <td class="px-4 py-3">Reminds you to log, and warns when a day goes over budget.</td>
+                <td class="px-4 py-3">Log Activity, Daily reminder.</td>
+                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+              </tr>
+              <tr data-api="file" class="border-b border-ink/10">
+                <th scope="row" class="px-4 py-3 font-semibold">File API with Blob and URL</th>
+                <td class="px-4 py-3">FileReader reads an imported backup. Blob and object URLs build the CSV and JSON downloads.</td>
+                <td class="px-4 py-3">My Log, Back up or move your log.</td>
+                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+              </tr>
+              <tr data-api="share" class="border-b border-ink/10">
+                <th scope="row" class="px-4 py-3 font-semibold">Web Share and Clipboard</th>
+                <td class="px-4 py-3">Shares your 30-day summary through the phone’s share sheet, or copies it.</td>
+                <td class="px-4 py-3">Insights, Share my summary.</td>
+                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+              </tr>
+              <tr data-api="validation" class="border-b border-ink/10">
+                <th scope="row" class="px-4 py-3 font-semibold">Constraint Validation</th>
+                <td class="px-4 py-3">Checks the amount and date with the browser’s validity states, then shows plain-language messages.</td>
+                <td class="px-4 py-3">Clear the amount, or type a very large one.</td>
+                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+              </tr>
+              <tr data-api="observer">
+                <th scope="row" class="px-4 py-3 font-semibold">Intersection Observer</th>
+                <td class="px-4 py-3">Highlights the current section in the navigation as you scroll.</td>
+                <td class="px-4 py-3">Scroll the page.</td>
+                <td class="px-4 py-3"><span data-support></span><span data-note class="block text-xs text-ink/70"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="mt-6 max-w-3xl text-sm leading-6 text-ink/80">Semantic HTML5 elements used: <code>header</code>, <code>nav</code>, <code>main</code>, <code>section</code>, <code>aside</code>, <code>footer</code>, <code>figure</code> and <code>figcaption</code>, <code>time</code>, <code>output</code>, <code>meter</code>, <code>details</code> and <code>summary</code>, <code>dialog</code>, and the <code>date</code>, <code>time</code>, <code>number</code> and <code>file</code> input types.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer id="about" class="on-dark bg-spruce-deep text-white/80">
+    <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="font-display text-xl text-white">CarbonFootprint India</h2>
+        <p class="mt-3 max-w-sm text-sm leading-6">A student project for tracking everyday emissions and encouraging practical climate action.</p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-white">Explore</h3>
+        <ul class="mt-3 space-y-2 text-sm">
+          <li><a class="underline-offset-4 hover:text-white hover:underline" href="#activities">Log Activity</a></li>
+          <li><a class="underline-offset-4 hover:text-white hover:underline" href="#insights">Insights</a></li>
+          <li><a class="underline-offset-4 hover:text-white hover:underline" href="#apis">HTML5 APIs</a></li>
+          <li><a class="underline-offset-4 hover:text-white hover:underline" href="#home">Back to top</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-semibold text-white">About the numbers</h3>
+        <p class="mt-3 text-sm leading-6">Emission factors are illustrative values for this exercise. A production version would calculate from verified factors. Everything you log stays in your browser.</p>
+      </div>
+    </div>
+    <div class="border-t border-white/10 px-4 py-5 text-center text-xs text-white/70">© 2026 CarbonFootprint India · Sustainability &amp; Environment</div>
+  </footer>
+
+  <!-- Live message area (used for confirmations, reminders and errors) -->
+  <div id="toast" role="status" aria-live="polite" class="pointer-events-none fixed inset-x-4 bottom-4 z-[70] mx-auto hidden max-w-md rounded-md bg-ink px-4 py-3 text-center text-sm font-semibold text-white shadow-lg"></div>
+
+  <!-- Native <dialog> for the destructive action -->
+  <dialog id="confirm-dialog" class="m-auto w-[calc(100%-2rem)] max-w-sm rounded-xl p-6 text-ink backdrop:bg-ink/60">
+    <form method="dialog">
+      <h2 class="font-display text-2xl text-spruce">Clear all data?</h2>
+      <p class="mt-2 text-sm leading-6">This removes every logged activity and pledge from this browser. Download a backup first if you want to keep them.</p>
+      <div class="mt-6 flex justify-end gap-2">
+        <button value="cancel" class="rounded-md border border-ink/30 px-4 py-2 text-sm font-semibold hover:bg-sage">Keep my data</button>
+        <button value="confirm" class="rounded-md bg-red-700 px-4 py-2 text-sm font-bold text-white hover:bg-red-800">Clear everything</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    'use strict';
+
+    /* =====================================================================
+       Small helpers
+       ===================================================================== */
+    const $ = (sel, root = document) => root.querySelector(sel);
+
+    // Builds DOM nodes safely (text goes in as text, never as HTML)
+    function h(tag, attrs = {}, ...kids) {
+      const el = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (v == null || v === false) continue;
+        if (k === 'class') el.className = v;
+        else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+        else el.setAttribute(k, v === true ? '' : v);
+      }
+      kids.flat().forEach((kid) => {
+        if (kid == null || kid === false) return;
+        el.append(kid instanceof Node ? kid : document.createTextNode(String(kid)));
+      });
+      return el;
+    }
+
+    const fmt = (n) => n.toLocaleString('en-IN', { maximumFractionDigits: n < 1000 ? 1 : 0 });
+    const fmtT = (n) => n.toLocaleString('en-IN', { minimumFractionDigits: 1, maximumFractionDigits: 2 });
+    const lowerFirst = (s) => s.charAt(0).toLowerCase() + s.slice(1);
+    // "1 meal", "2 meals", "12 km"
+    const amountText = (n, unit) => fmt(n) + ' ' + (n === 1 && (unit === 'meals' || unit === 'items') ? unit.slice(0, -1) : unit);
+    const round3 = (n) => Math.round(n * 1000) / 1000;
+    const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+
+    // Dates are handled as local "YYYY-MM-DD" strings
+    const toStr = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    const todayStr = () => toStr(new Date());
+    function shiftDate(s, n) { const d = new Date(s + 'T12:00:00'); d.setDate(d.getDate() + n); return toStr(d); }
+    const niceDate = (s, withWeekday) => new Date(s + 'T12:00:00').toLocaleDateString('en-IN', withWeekday ? { weekday: 'short', day: 'numeric', month: 'short' } : { day: 'numeric', month: 'short' });
+
+    let toastTimer;
+    function toast(message) {
+      const el = $('#toast');
+      el.textContent = message;
+      el.classList.remove('hidden');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.add('hidden'), 4500);
+    }
+
+    /* =====================================================================
+       Mobile menu and scroll-spy   (Intersection Observer API)
+       ===================================================================== */
+    const menuButton = $('#menuButton');
+    const mainNav = $('#mainNav');
+
+    function setMenu(open) {
+      mainNav.classList.toggle('hidden', !open);
+      menuButton.setAttribute('aria-expanded', String(open));
+    }
+    menuButton.addEventListener('click', () => setMenu(mainNav.classList.contains('hidden')));
+    mainNav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        if (window.matchMedia('(max-width: 1023px)').matches) setMenu(false);
+      });
+    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+
+    const navLinks = [...document.querySelectorAll('a[data-nav]')];
+    function markActive(id) {
+      navLinks.forEach((a) => a.setAttribute('aria-current', String(a.getAttribute('href') === '#' + id)));
+    }
+    if ('IntersectionObserver' in window) {
+      const spy = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => { if (entry.isIntersecting) markActive(entry.target.id); });
+      }, { rootMargin: '-35% 0px -60% 0px' });
+      ['home', 'activities', 'log', 'insights', 'pledges', 'apis'].forEach((id) => spy.observe(document.getElementById(id)));
+    }
+    window.addEventListener('scroll', () => {
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) markActive('about');
+    }, { passive: true });
+
+    /* =====================================================================
+       Emission catalogue (illustrative kg CO2e per unit)
+       ===================================================================== */
+    const DAILY_BUDGET = 6.3; // 2.3 t a year is about 6.3 kg a day
+    const CAT_ORDER = ['travel', 'energy', 'food', 'shopping'];
+    const CAT_NAME = { travel: 'Transportation', energy: 'Home energy', food: 'Food', shopping: 'Shopping' };
+    const CAT_COLOR = { travel: '#F2A900', energy: '#0F4C47', food: '#2F7D57', shopping: '#7FB2A6' };
+
+    const categories = {
+      travel: {
+        unit: 'km', start: 10, max: 20000, compare: true,
+        options: [
+          { id: 'metro', label: 'Metro', factor: 0.04 },
+          { id: 'bus', label: 'City bus', factor: 0.05 },
+          { id: 'two', label: 'Two-wheeler (petrol)', factor: 0.05 },
+          { id: 'auto', label: 'Auto-rickshaw (CNG)', factor: 0.09 },
+          { id: 'car', label: 'Car (petrol)', factor: 0.17 },
+          { id: 'train', label: 'Train', factor: 0.03 },
+          { id: 'flight', label: 'Domestic flight', factor: 0.15 },
+          { id: 'walk', label: 'Walk or cycle', factor: 0 }
+        ]
+      },
+      energy: {
+        unit: 'kWh', start: 5, max: 5000, compare: false,
+        note: 'Emissions depend on the fuel and the power grid, so using less energy is the main lever.',
+        options: [
+          { id: 'elec', label: 'Electricity', unit: 'kWh', factor: 0.7 },
+          { id: 'lpg', label: 'LPG cooking gas', unit: 'kg', factor: 3.0, max: 100 }
+        ]
+      },
+      food: {
+        unit: 'meals', start: 1, max: 50, compare: true,
+        options: [
+          { id: 'veg', label: 'Vegetarian meal', factor: 0.6 },
+          { id: 'egg', label: 'Egg meal', factor: 0.9 },
+          { id: 'chicken', label: 'Chicken meal', factor: 1.5 },
+          { id: 'mutton', label: 'Mutton meal', factor: 4.0 }
+        ]
+      },
+      shopping: {
+        unit: 'items', start: 1, max: 50, compare: false,
+        note: 'Buying second-hand, repairing and keeping things longer avoids most of this.',
+        options: [
+          { id: 'tee', label: 'Cotton T-shirt', factor: 7 },
+          { id: 'jeans', label: 'Jeans', factor: 25 },
+          { id: 'phone', label: 'Smartphone', factor: 65 },
+          { id: 'laptop', label: 'Laptop', factor: 300 }
+        ]
+      }
+    };
+
+    // Lookup by activity id: KIND.car -> { cat, label, unit, factor, max }
+    const KIND = Object.create(null);
+    const FACTORS = {};
+    for (const [cat, c] of Object.entries(categories)) {
+      c.options.forEach((o) => {
+        KIND[o.id] = { cat, label: o.label, unit: o.unit || c.unit, factor: o.factor, max: o.max || c.max };
+        FACTORS[o.id] = o.factor;
+      });
+    }
+
+    /* =====================================================================
+       Web Storage API: the log, pledges and reminder settings persist in
+       localStorage; the unsent form draft lives in sessionStorage.
+       ===================================================================== */
+    const STORE_KEY = 'cfi.state.v1';
+    const DRAFT_KEY = 'cfi.draft';
+    let storageOK = true;
+
+    const store = {
+      get(key) {
+        try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : null; }
+        catch { return null; }
+      },
+      set(key, value) {
+        try { localStorage.setItem(key, JSON.stringify(value)); return true; }
+        catch { storageOK = false; return false; }
+      }
+    };
+
+    function makeEntry(date, kind, amount, sample) {
+      const k = KIND[kind];
+      return { id: uid(), ts: sample ? 0 : Date.now(), date, cat: k.cat, kind, label: k.label, amount, unit: k.unit, kg: round3(amount * k.factor), sample: !!sample };
+    }
+
+    // Accepts only entries that match the catalogue; recalculates kg instead of trusting the file
+    function cleanEntry(e) {
+      if (!e || typeof e !== 'object' || typeof e.kind !== 'string' || !(e.kind in KIND)) return null;
+      const k = KIND[e.kind];
+      const amount = Number(e.amount);
+      if (typeof e.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(e.date) || Number.isNaN(Date.parse(e.date + 'T00:00:00Z'))) return null;
+      if (!(amount > 0) || amount > k.max) return null;
+      return { id: typeof e.id === 'string' && e.id ? e.id.slice(0, 40) : uid(), ts: Number(e.ts) || 0, date: e.date, cat: k.cat, kind: e.kind, label: k.label, amount, unit: k.unit, kg: round3(amount * k.factor), sample: !!e.sample };
+    }
+    function cleanPledge(p) {
+      if (!p || typeof p.id !== 'string' || typeof p.title !== 'string' || !(Number(p.saving) >= 0)) return null;
+      return { id: p.id.slice(0, 40), title: p.title.slice(0, 160), saving: Number(p.saving) };
+    }
+
+    // Sample data so the charts are not empty on the first visit (deterministic, flagged as sample)
+    function makeSample() {
+      const today = todayStr();
+      let seed = 20260921;
+      const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const out = [];
+      const add = (age, kind, amount) => out.push(makeEntry(shiftDate(today, -age), kind, amount, true));
+      for (let age = 59; age >= 0; age--) {
+        const dow = new Date(shiftDate(today, -age) + 'T12:00:00').getDay();
+        const weekday = dow >= 1 && dow <= 5;
+        const r = rnd();
+        if (weekday) { if (r < 0.5) add(age, 'car', 26); else if (r < 0.8) add(age, 'metro', 28); else add(age, 'auto', 10); }
+        else if (r < 0.6) add(age, 'car', 20);
+        add(age, 'elec', Math.round((2 + rnd() * 1.2) * 10) / 10);
+        const m = rnd();
+        add(age, m < 0.55 ? 'veg' : m < 0.65 ? 'egg' : m < 0.92 ? 'chicken' : 'mutton', weekday ? 1 : 2);
+        if (age % 4 === 0) add(age, 'lpg', 0.5);
+      }
+      add(5, 'tee', 1); add(17, 'jeans', 1); add(33, 'phone', 1); add(48, 'tee', 2);
+      return out;
+    }
+
+    const defaultReminder = () => ({ enabled: false, time: '20:00', lastFired: '' });
+
+    function loadState() {
+      const saved = store.get(STORE_KEY);
+      if (saved && Array.isArray(saved.entries)) {
+        const rem = saved.reminder && typeof saved.reminder === 'object' ? saved.reminder : {};
+        return {
+          entries: saved.entries.map(cleanEntry).filter(Boolean),
+          pledges: Array.isArray(saved.pledges) ? saved.pledges.map(cleanPledge).filter(Boolean) : [],
+          reminder: { ...defaultReminder(), enabled: !!rem.enabled, time: /^\d{2}:\d{2}$/.test(rem.time) ? rem.time : '20:00', lastFired: typeof rem.lastFired === 'string' ? rem.lastFired : '' }
+        };
+      }
+      const fresh = { entries: makeSample(), pledges: [], reminder: defaultReminder() };
+      store.set(STORE_KEY, fresh);
+      return fresh;
+    }
+
+    let state = loadState();
+    const save = () => store.set(STORE_KEY, state);
+
+    // Keep several open tabs in sync
+    window.addEventListener('storage', (e) => {
+      if (e.key === STORE_KEY && e.newValue) { state = loadState(); refreshAll(); updateReminderUI(); }
+    });
+
+    /* =====================================================================
+       Web Workers API: the analysis runs off the main thread.
+       analyse() is a pure function. Its source is copied into the worker,
+       and it is also the fallback when workers are not available.
+       ===================================================================== */
+    function analyse(entries, today, budget, F) {
+      const DAY = 86400000;
+      const t = (s) => Date.parse(s + 'T00:00:00Z');
+      const todayT = t(today);
+      const r1 = (n) => Math.round(n * 10) / 10;
+      const cats = { travel: 0, energy: 0, food: 0, shopping: 0 };
+      const kinds = {};
+      const byDay = new Array(14).fill(0);
+      let monthTotal = 0, prevTotal = 0, todayTotal = 0;
+
+      for (const e of entries) {
+        const age = Math.round((todayT - t(e.date)) / DAY); // 0 = today
+        if (age < 0) continue;
+        if (age === 0) todayTotal += e.kg;
+        if (age < 14) byDay[13 - age] += e.kg;
+        if (age < 30) {
+          monthTotal += e.kg;
+          cats[e.cat] += e.kg;
+          const k = kinds[e.kind] || (kinds[e.kind] = { amount: 0, kg: 0 });
+          k.amount += e.amount;
+          k.kg += e.kg;
+        } else if (age < 60) {
+          prevTotal += e.kg;
+        }
+      }
+
+      const recs = [];
+      const push = (id, title, detail, saving) => { if (saving >= 0.5) recs.push({ id, title, detail, saving: r1(saving) }); };
+
+      if (kinds.car) {
+        const km = kinds.car.amount;
+        push('car-metro', 'Take the metro or a bus for half your car trips',
+          'You drove ' + r1(km) + ' km in the last 30 days. Moving half of that to the metro saves the most for the least change.',
+          km * 0.5 * (F.car - F.metro));
+      }
+      if (kinds.auto) {
+        const km = kinds.auto.amount;
+        push('auto-metro', 'Use the metro instead of an auto-rickshaw on regular routes',
+          'You rode ' + r1(km) + ' km by auto-rickshaw. Switching half of it to the metro or a bus trims those routes.',
+          km * 0.5 * (F.auto - F.metro));
+      }
+      if (kinds.flight) {
+        const km = kinds.flight.amount;
+        push('flight-train', 'Take the train instead of flying',
+          'You flew ' + r1(km) + ' km. The same distance by train emits about a fifth as much.',
+          km * (F.flight - F.train));
+      }
+      if (kinds.elec) {
+        const kwh = kinds.elec.amount;
+        push('ac', 'Set the air conditioner to 24–26 °C',
+          'You used ' + r1(kwh) + ' kWh of electricity. A few degrees higher on the thermostat cuts cooling use. This estimate assumes 10% less.',
+          kwh * 0.1 * F.elec);
+      }
+      if (kinds.mutton) {
+        const n = Math.min(Math.floor(kinds.mutton.amount), 4);
+        if (n >= 1) push('mutton-veg', 'Swap ' + n + ' mutton meal' + (n > 1 ? 's' : '') + ' for vegetarian ones',
+          'Mutton is the highest-carbon meal on the list. Each swap saves about ' + r1(F.mutton - F.veg) + ' kg.',
+          n * (F.mutton - F.veg));
+      }
+      if (kinds.chicken) {
+        const n = Math.min(Math.floor(kinds.chicken.amount), 4);
+        if (n >= 1) push('chicken-veg', 'Swap ' + n + ' chicken meal' + (n > 1 ? 's' : '') + ' for vegetarian ones',
+          'Each swap saves about ' + r1(F.chicken - F.veg) + ' kg, so a few a month adds up without changing how you eat the rest of the time.',
+          n * (F.chicken - F.veg));
+      }
+      if (cats.shopping > 0) {
+        push('shop-secondhand', 'Repair, or buy second-hand, half of what you buy new',
+          'Clothes and devices made ' + r1(cats.shopping) + ' kg of your last 30 days. Second-hand and repaired goods avoid most of that.',
+          cats.shopping * 0.5);
+      }
+      recs.sort((a, b) => b.saving - a.saving);
+
+      return { today, cats, byDay, monthTotal, prevTotal, todayTotal, recs: recs.slice(0, 5) };
+    }
+
+    let worker = null;
+    let reqId = 0;
+    let analysis = null;
+    let analysisMode = 'pending';
+
+    function setupWorker() {
+      if (typeof Worker !== 'function') return;
+      try {
+        const source = "'use strict';\nconst analyse = " + analyse.toString() + ";\n" +
+          "self.onmessage = (e) => { const d = e.data; self.postMessage({ id: d.id, result: analyse(d.entries, d.today, d.budget, d.factors) }); };";
+        const url = URL.createObjectURL(new Blob([source], { type: 'text/javascript' }));
+        worker = new Worker(url);
+        worker.onmessage = (e) => onAnalysis(e.data.result, e.data.id, 'worker');
+        worker.onerror = (e) => { if (e && e.preventDefault) e.preventDefault(); dropWorker(); };
+      } catch { worker = null; }
+    }
+    function dropWorker() {
+      if (worker) worker.terminate();
+      worker = null;
+      runAnalysis();
+    }
+    function runAnalysis() {
+      const payload = { id: ++reqId, entries: state.entries, today: todayStr(), budget: DAILY_BUDGET, factors: FACTORS };
+      if (worker) {
+        try { worker.postMessage(payload); return; } catch { worker = null; }
+      }
+      onAnalysis(analyse(payload.entries, payload.today, payload.budget, payload.factors), payload.id, 'main');
+    }
+    function onAnalysis(result, id, mode) {
+      if (id !== reqId) return; // a newer request is already on its way
+      analysis = result;
+      analysisMode = mode;
+      renderInsights();
+      renderSuggestions();
+      renderPledges();
+      drawAll(true);
+      refreshApiTable();
+    }
+
+    /* =====================================================================
+       Estimator form   (Constraint Validation API)
+       ===================================================================== */
+    const form = $('#estimator');
+    const kindSelect = $('#kind');
+    const amountInput = $('#amount');
+    const dateInput = $('#entry-date');
+    const unitLabel = $('#unit');
+    const amountError = $('#amount-error');
+    const dateError = $('#date-error');
+    const resultNum = $('#result-num');
+    const resultContext = $('#result-context');
+    const resultTip = $('#result-tip');
+    const currentKey = () => document.querySelector('input[name="category"]:checked').value;
+    const currentOption = () => categories[currentKey()].options[Number(kindSelect.value)];
+
+    function fillOptions(key) {
+      kindSelect.innerHTML = '';
+      categories[key].options.forEach((opt, i) => kindSelect.append(h('option', { value: String(i) }, opt.label)));
+      amountInput.value = categories[key].start;
+    }
+
+    function validateAmount() {
+      const cat = categories[currentKey()];
+      const opt = currentOption();
+      const unit = opt.unit || cat.unit;
+      const max = opt.max || cat.max;
+      amountInput.max = String(max);
+      amountInput.setCustomValidity('');
+      const v = amountInput.validity;
+      let msg = '';
+      if (v.valueMissing || v.badInput) msg = 'Enter how much you did, for example 12.5.';
+      else if (v.rangeUnderflow) msg = 'Enter an amount above 0.';
+      else if (v.rangeOverflow) msg = 'That is more than ' + fmt(max) + ' ' + unit + ' in one entry. Check the number.';
+      if (msg) amountInput.setCustomValidity(msg);
+      amountError.textContent = msg;
+      if (msg) amountInput.setAttribute('aria-invalid', 'true'); else amountInput.removeAttribute('aria-invalid');
+      return !msg;
+    }
+    function validateDate() {
+      dateInput.max = todayStr();
+      dateInput.min = shiftDate(todayStr(), -730);
+      dateInput.setCustomValidity('');
+      const v = dateInput.validity;
+      let msg = '';
+      if (v.valueMissing || v.badInput) msg = 'Choose the date of the activity.';
+      else if (v.rangeOverflow) msg = 'The date cannot be in the future.';
+      else if (v.rangeUnderflow) msg = 'Choose a date within the last two years.';
+      if (msg) dateInput.setCustomValidity(msg);
+      dateError.textContent = msg;
+      if (msg) dateInput.setAttribute('aria-invalid', 'true'); else dateInput.removeAttribute('aria-invalid');
+      return !msg;
+    }
+
+    function update() {
+      const cat = categories[currentKey()];
+      const opt = currentOption();
+      unitLabel.textContent = opt.unit || cat.unit;
+
+      if (!validateAmount()) {
+        resultNum.textContent = '0';
+        resultContext.textContent = 'Fix the amount to see the estimate.';
+        resultTip.textContent = '';
+        return;
+      }
+      const amount = parseFloat(amountInput.value);
+      const kg = amount * opt.factor;
+      resultNum.textContent = fmt(kg);
+      resultContext.textContent = kg < DAILY_BUDGET
+        ? `That is ${Math.round((kg / DAILY_BUDGET) * 100)}% of one day’s budget of ${DAILY_BUDGET} kg.`
+        : `That is ${fmt(kg / DAILY_BUDGET)} days of a ${DAILY_BUDGET} kg daily budget.`;
+
+      if (cat.compare) {
+        const best = cat.options.filter((o) => o.factor > 0 && (opt.id === 'flight' ? o.id === 'train' : o.id !== 'train')).reduce((a, b) => (b.factor < a.factor ? b : a));
+        if (opt.factor === 0) {
+          resultTip.textContent = 'Zero emissions. Nothing to cut here.';
+        } else if (opt.factor > best.factor) {
+          const alt = amount * best.factor;
+          resultTip.textContent = `Choosing ${lowerFirst(best.label)} instead would emit ${fmt(alt)} kg, saving ${fmt(kg - alt)} kg.`;
+        } else {
+          resultTip.textContent = 'This is already among the lowest-carbon choices here.';
+        }
+      } else {
+        resultTip.textContent = cat.note;
+      }
+    }
+
+    // sessionStorage: survive a reload in this tab without saving an unsent entry
+    function saveDraft() {
+      try { sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ cat: currentKey(), kind: kindSelect.value, amount: amountInput.value })); } catch { /* storage may be blocked */ }
+    }
+    function restoreDraft() {
+      try {
+        const d = JSON.parse(sessionStorage.getItem(DRAFT_KEY));
+        if (!d || !categories[d.cat]) return;
+        const radio = document.getElementById('cat-' + d.cat);
+        radio.checked = true;
+        fillOptions(d.cat);
+        if (categories[d.cat].options[Number(d.kind)]) kindSelect.value = String(Number(d.kind));
+        if (d.amount !== '') amountInput.value = d.amount;
+      } catch { /* ignore a broken draft */ }
+    }
+
+    document.querySelectorAll('input[name="category"]').forEach((radio) => {
+      radio.addEventListener('change', () => { fillOptions(currentKey()); update(); saveDraft(); });
+    });
+    kindSelect.addEventListener('change', () => { update(); saveDraft(); });
+    amountInput.addEventListener('input', () => { update(); saveDraft(); });
+    dateInput.addEventListener('input', validateDate);
+
+    const sumForDate = (date) => state.entries.reduce((s, e) => (e.date === date ? s + e.kg : s), 0);
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const okDate = validateDate();
+      const okAmount = validateAmount();
+      if (!okDate || !okAmount) {
+        (okAmount ? dateInput : amountInput).focus();
+        return;
+      }
+      const opt = currentOption();
+      const amount = parseFloat(amountInput.value);
+      const entry = makeEntry(dateInput.value, opt.id, amount, false);
+      const before = sumForDate(entry.date);
+      state.entries.push(entry);
+      commit();
+      toast(`Added ${entry.label}, ${amountText(entry.amount, entry.unit)}: ${fmt(entry.kg)} kg CO₂e.`);
+      const after = before + entry.kg;
+      if (entry.date === todayStr() && before <= DAILY_BUDGET && after > DAILY_BUDGET) {
+        const body = `Today is at ${fmt(after)} kg, over the ${DAILY_BUDGET} kg daily budget.`;
+        if (!notify('Over today’s carbon budget', body, 'budget-alert')) setTimeout(() => toast(body), 1200);
+      }
+    });
+
+    /* =====================================================================
+       Geolocation API: measure a trip
+       ===================================================================== */
+    const trip = { active: false, demo: false, watchId: null, feed: null, clock: null, last: null, meters: 0, startedAt: 0, mode: 'car' };
+    const tripEls = {
+      mode: $('#trip-mode'), start: $('#trip-start'), stop: $('#trip-stop'), demo: $('#trip-demo'),
+      dist: $('#trip-distance'), time: $('#trip-time'), pos: $('#trip-pos'), status: $('#trip-status')
+    };
+    const GEO_ERRORS = {
+      1: 'Location permission was denied. Allow location for this site in your browser, or try the demo walk.',
+      2: 'Your position is not available right now. Check that location services are turned on.',
+      3: 'Finding your position timed out. Try again outdoors or with a better signal.'
+    };
+
+    categories.travel.options.filter((o) => o.id !== 'flight').forEach((o) => tripEls.mode.append(h('option', { value: o.id }, o.label)));
+    tripEls.mode.value = 'car';
+
+    function haversine(lat1, lon1, lat2, lon2) {
+      const R = 6371000, rad = Math.PI / 180;
+      const dLat = (lat2 - lat1) * rad, dLon = (lon2 - lon1) * rad;
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * rad) * Math.cos(lat2 * rad) * Math.sin(dLon / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(a));
+    }
+    function setTripUI(active) {
+      trip.active = active;
+      tripEls.start.disabled = active;
+      tripEls.demo.disabled = active;
+      tripEls.stop.disabled = !active;
+      tripEls.mode.disabled = active;
+    }
+    function tickClock() {
+      const s = Math.floor((Date.now() - trip.startedAt) / 1000);
+      tripEls.time.textContent = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+    }
+    function onPosition(pos) {
+      const { latitude, longitude, accuracy } = pos.coords;
+      tripEls.pos.textContent = `${latitude.toFixed(4)}, ${longitude.toFixed(4)} (±${Math.round(accuracy)} m)${trip.demo ? ' simulated' : ''}`;
+      if (accuracy > 80) { tripEls.status.textContent = `Waiting for a stronger GPS signal (±${Math.round(accuracy)} m).`; return; }
+      tripEls.status.textContent = trip.demo ? 'Demo mode: positions are simulated and no GPS is used.' : 'Tracking. Keep this page open while you travel.';
+      if (!trip.last) { trip.last = { latitude, longitude }; return; }
+      const d = haversine(trip.last.latitude, trip.last.longitude, latitude, longitude);
+      if (d >= Math.max(5, accuracy * 0.5)) { // ignore GPS jitter
+        trip.meters += d;
+        trip.last = { latitude, longitude };
+        tripEls.dist.textContent = (trip.meters / 1000).toFixed(2);
+      }
+    }
+    function beginTrip(demo) {
+      trip.demo = demo; trip.last = null; trip.meters = 0; trip.startedAt = Date.now();
+      trip.mode = tripEls.mode.value;
+      tripEls.dist.textContent = '0.00';
+      tripEls.time.textContent = '0:00';
+      tripEls.pos.textContent = 'Locating…';
+      setTripUI(true);
+      trip.clock = setInterval(tickClock, 1000);
+    }
+    tripEls.start.addEventListener('click', () => {
+      if (!('geolocation' in navigator)) {
+        tripEls.status.textContent = 'This browser does not support geolocation. Try the demo walk instead.';
+        return;
+      }
+      beginTrip(false);
+      tripEls.status.textContent = 'Asking for your location…';
+      trip.watchId = navigator.geolocation.watchPosition(onPosition, (err) => {
+        let msg = GEO_ERRORS[err.code] || 'Could not read your position.';
+        if (!window.isSecureContext) msg += ' This page is not on https or localhost, which browsers require for location.';
+        tripEls.status.textContent = msg;
+        if (err.code === 1) endTrip(false); // permission denied: nothing to wait for
+      }, { enableHighAccuracy: true, maximumAge: 1000, timeout: 20000 });
+    });
+    tripEls.demo.addEventListener('click', () => {
+      beginTrip(true);
+      let lat = 20.5937; const lon = 78.9629; // neutral point in India
+      tripEls.status.textContent = 'Demo mode: positions are simulated and no GPS is used.';
+      trip.feed = setInterval(() => { lat += 0.0009; onPosition({ coords: { latitude: lat, longitude: lon, accuracy: 8 } }); }, 600);
+      onPosition({ coords: { latitude: lat, longitude: lon, accuracy: 8 } });
+    });
+    tripEls.stop.addEventListener('click', () => endTrip(true));
+
+    function endTrip(useDistance) {
+      if (!trip.active) return;
+      if (trip.watchId != null) navigator.geolocation.clearWatch(trip.watchId);
+      clearInterval(trip.feed); clearInterval(trip.clock);
+      trip.watchId = null;
+      setTripUI(false);
+      if (!useDistance) return;
+      const km = trip.meters / 1000;
+      if (km < 0.05) { tripEls.status.textContent = 'That trip was under 50 m, so nothing was added.'; return; }
+      const amount = Math.max(0.1, Math.round(km * 10) / 10);
+      document.getElementById('cat-travel').checked = true;
+      fillOptions('travel');
+      const idx = categories.travel.options.findIndex((o) => o.id === trip.mode);
+      kindSelect.value = String(Math.max(0, idx));
+      amountInput.value = amount;
+      update(); saveDraft();
+      tripEls.status.textContent = `Trip of ${amount} km added to the form. Check it and press Add to my log.`;
+      form.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'center' });
+      $('#add-button').focus({ preventScroll: true });
+    }
+
+    /* =====================================================================
+       Notifications API
+       ===================================================================== */
+    const remindEls = { time: $('#remind-time'), toggle: $('#remind-toggle'), test: $('#remind-test'), status: $('#remind-status') };
+    const notifSupported = () => 'Notification' in window;
+    const hhmm = () => { const n = new Date(); return String(n.getHours()).padStart(2, '0') + ':' + String(n.getMinutes()).padStart(2, '0'); };
+
+    function notify(title, body, tag) {
+      if (!notifSupported() || Notification.permission !== 'granted') return false;
+      try {
+        const n = new Notification(title, { body, tag });
+        n.onclick = () => { window.focus(); n.close(); };
+        return true;
+      } catch { return false; } // some mobile browsers only allow notifications through a service worker
+    }
+    async function askPermission() {
+      if (!notifSupported()) { toast('This browser does not support notifications.'); return false; }
+      let p = Notification.permission;
+      if (p === 'default') { try { p = await Notification.requestPermission(); } catch { p = Notification.permission; } }
+      refreshApiTable();
+      if (p !== 'granted') toast('Notifications are blocked. Allow them in your browser’s site settings to use reminders.');
+      return p === 'granted';
+    }
+    function updateReminderUI() {
+      const r = state.reminder;
+      remindEls.time.value = r.time;
+      remindEls.toggle.textContent = r.enabled ? 'Turn off reminders' : 'Turn on reminders';
+      remindEls.toggle.setAttribute('aria-pressed', String(r.enabled));
+      const perm = notifSupported() ? Notification.permission : 'unsupported';
+      remindEls.status.textContent = {
+        unsupported: 'This browser does not support notifications.',
+        denied: 'Notifications are blocked for this site. Change this in your browser’s site settings.',
+        default: 'Notifications have not been allowed yet. Turn on reminders to be asked.',
+        granted: r.enabled ? `Reminders are on for ${r.time}. Keep this page open in a tab to receive them.` : 'Notifications are allowed. Reminders are off.'
+      }[perm];
+    }
+    remindEls.toggle.addEventListener('click', async () => {
+      const r = state.reminder;
+      if (r.enabled) { r.enabled = false; }
+      else {
+        if (!(await askPermission())) { updateReminderUI(); return; }
+        r.enabled = true;
+        if (hhmm() >= r.time) r.lastFired = todayStr(); // do not fire straight away for a time already passed
+      }
+      save(); updateReminderUI();
+    });
+    remindEls.time.addEventListener('input', () => {
+      if (!remindEls.time.value) return;
+      state.reminder.time = remindEls.time.value;
+      if (hhmm() >= state.reminder.time) state.reminder.lastFired = todayStr();
+      save(); updateReminderUI();
+    });
+    remindEls.test.addEventListener('click', async () => {
+      if (!(await askPermission())) return;
+      if (!notify('CarbonFootprint India', 'This is a test. Reminders will look like this.', 'test')) toast('Could not show a notification here. Check your browser settings.');
+    });
+    function checkReminder() {
+      const r = state.reminder;
+      const today = todayStr();
+      if (!r.enabled || r.lastFired === today || hhmm() < r.time) return;
+      r.lastFired = today; save();
+      if (sumForDate(today) > 0) return; // already logged today
+      const body = 'You have not logged anything today. It takes about a minute.';
+      if (!notify('Log today’s carbon', body, 'daily-log')) toast(body);
+    }
+    setInterval(checkReminder, 30000);
+
+    /* =====================================================================
+       Rendering: receipt, log, category list
+       ===================================================================== */
+    function renderReceipt() {
+      const today = todayStr();
+      const dateEl = $('#receipt-date');
+      dateEl.setAttribute('datetime', today);
+      dateEl.textContent = 'Today, ' + niceDate(today);
+
+      const groups = new Map();
+      state.entries.filter((e) => e.date === today).forEach((e) => {
+        const g = groups.get(e.kind) || { kind: e.kind, amount: 0, kg: 0 };
+        g.amount += e.amount; g.kg += e.kg;
+        groups.set(e.kind, g);
+      });
+      const lines = [...groups.values()].sort((a, b) => b.kg - a.kg);
+      const list = $('#receipt-lines');
+      list.replaceChildren();
+
+      const lineText = (g) => {
+        const k = KIND[g.kind];
+        return `${k.label}, ${fmt(g.amount)}${['km', 'kWh', 'kg'].includes(k.unit) ? ' ' + k.unit : ''}`;
+      };
+      const dots = () => h('span', { class: 'flex-1 border-b border-dotted border-ink/30', 'aria-hidden': 'true' });
+      const MAX_LINES = 6;
+
+      if (!lines.length) {
+        list.append(h('li', { class: 'text-ink/70' }, 'Nothing logged today yet. Add an activity to start your receipt.'));
+      }
+      lines.slice(0, MAX_LINES).forEach((g, i) => {
+        const largest = i === 0 && lines.length > 1;
+        list.append(h('li', { class: 'flex items-baseline gap-2' + (largest ? ' -mx-3 rounded bg-marigold/25 px-3 py-1.5' : '') },
+          h('span', {}, lineText(g), largest ? h('span', { class: 'ml-1 rounded-sm bg-marigold px-1.5 py-0.5 text-xs font-bold text-spruce-deep' }, 'Largest') : null),
+          dots(),
+          h('span', { class: 'font-semibold tabular-nums' }, fmt(g.kg) + ' kg')));
+      });
+      if (lines.length > MAX_LINES) {
+        const rest = lines.slice(MAX_LINES);
+        list.append(h('li', { class: 'flex items-baseline gap-2' }, h('span', {}, `${rest.length} more activities`), dots(), h('span', { class: 'font-semibold tabular-nums' }, fmt(rest.reduce((s, g) => s + g.kg, 0)) + ' kg')));
+      }
+
+      const total = lines.reduce((s, g) => s + g.kg, 0);
+      $('#receipt-total').textContent = fmt(total);
+      $('#receipt-note').textContent = `A 2.3 t a year target allows ${DAILY_BUDGET} kg a day. ` + (total === 0
+        ? 'Log something to see where today stands.'
+        : total > DAILY_BUDGET ? `Today is ${fmt(total - DAILY_BUDGET)} kg over.` : `Today is ${fmt(DAILY_BUDGET - total)} kg under.`);
+    }
+
+    let showAllRows = false;
+    function renderLog() {
+      const body = $('#log-body');
+      body.replaceChildren();
+      const rows = [...state.entries].sort((a, b) => b.date.localeCompare(a.date) || b.ts - a.ts);
+      const shown = showAllRows ? rows : rows.slice(0, 8);
+
+      if (!rows.length) {
+        const cell = h('td', { colspan: '5', class: 'px-4 py-8 text-center text-ink/70' }, 'Nothing logged yet. Add an activity above, or ',
+          h('button', { type: 'button', class: 'font-semibold text-spruce underline underline-offset-4', onclick: () => { state.entries = makeSample(); commit(); } }, 'load sample data'), '.');
+        body.append(h('tr', {}, cell));
+      }
+      shown.forEach((e) => {
+        body.append(h('tr', { class: 'border-b border-ink/10 last:border-0' },
+          h('td', { class: 'whitespace-nowrap px-4 py-2.5' }, h('time', { datetime: e.date }, niceDate(e.date, true))),
+          h('td', { class: 'px-4 py-2.5' }, e.label, e.sample ? h('span', { class: 'ml-2 rounded-sm bg-sage px-1.5 py-0.5 text-xs text-ink/70' }, 'Sample') : null),
+          h('td', { class: 'whitespace-nowrap px-4 py-2.5 text-right tabular-nums' }, amountText(e.amount, e.unit)),
+          h('td', { class: 'px-4 py-2.5 text-right font-semibold tabular-nums' }, fmt(e.kg)),
+          h('td', { class: 'px-4 py-2.5 text-right' },
+            h('button', { type: 'button', class: 'rounded px-2 py-1 text-sm font-semibold text-red-700 hover:bg-sage', onclick: () => removeEntry(e.id) },
+              'Remove', h('span', { class: 'sr-only' }, ` ${e.label}, ${amountText(e.amount, e.unit)}, ${niceDate(e.date)}`)))));
+      });
+
+      const more = $('#log-more');
+      more.classList.toggle('hidden', rows.length <= 8);
+      more.textContent = showAllRows ? 'Show fewer' : `Show all ${rows.length} entries`;
+      $('#log-summary').textContent = rows.length
+        ? `${rows.length} entries, ${fmt(rows.reduce((s, e) => s + e.kg, 0))} kg CO₂e in total.` + (storageOK ? '' : ' Saving is turned off in this browser, so this log will be lost when you close the page.')
+        : 'No entries yet.';
+      const banner = $('#sample-banner');
+      const hasSample = state.entries.some((e) => e.sample);
+      banner.classList.toggle('hidden', !hasSample);
+      banner.classList.toggle('flex', hasSample);
+    }
+    $('#log-more').addEventListener('click', () => { showAllRows = !showAllRows; renderLog(); });
+    function removeEntry(id) {
+      state.entries = state.entries.filter((e) => e.id !== id);
+      commit();
+      toast('Entry removed.');
+    }
+    $('#clear-sample').addEventListener('click', () => {
+      state.entries = state.entries.filter((e) => !e.sample);
+      commit();
+      toast('Sample data cleared.');
+    });
+
+    function renderInsights() {
+      const a = analysis;
+      const total = a.monthTotal;
+      $('#stat-today').textContent = fmt(a.todayTotal);
+      $('#stat-month').textContent = fmt(total);
+      const annualT = (total / 30) * 365 / 1000;
+      $('#stat-year').textContent = total > 0 ? fmtT(annualT) : '0';
+
+      $('#insights-title').textContent = total > 0 ? `Where the last 30 days’ ${fmt(total)} kg came from` : 'Log a few activities to see where your carbon goes';
+      let lead = 'Footprints are lopsided. Seeing the split shows which habit is worth changing first.';
+      if (total > 0 && a.prevTotal > 0) {
+        const pct = Math.round((Math.abs(total - a.prevTotal) / a.prevTotal) * 100);
+        lead = `${pct}% ${total <= a.prevTotal ? 'lower' : 'higher'} than the 30 days before. ` + (annualT <= 2.3 ? 'At this pace you would land under the 2.3 t a year target.' : `At this pace you would emit ${fmtT(annualT)} t a year, against a 2.3 t target.`);
+      } else if (total > 0) {
+        lead += ' Keep logging and this page will compare you with earlier weeks.';
+      }
+      if (state.entries.some((e) => e.sample)) lead += ' Includes sample data.';
+      $('#insights-lead').textContent = lead;
+
+      // Budget meter (HTML5 <meter>)
+      const meter = $('#budget-meter');
+      meter.max = Math.max(DAILY_BUDGET * 2, a.todayTotal);
+      meter.value = a.todayTotal;
+      $('#budget-text').textContent = a.todayTotal > DAILY_BUDGET
+        ? `${fmt(a.todayTotal)} kg so far, ${fmt(a.todayTotal - DAILY_BUDGET)} kg over budget.`
+        : `${fmt(a.todayTotal)} kg so far, ${fmt(DAILY_BUDGET - a.todayTotal)} kg left in today’s budget.`;
+
+      // Category list (also the text alternative to the donut)
+      const list = $('#cat-list');
+      list.replaceChildren();
+      const ordered = CAT_ORDER.map((k) => [k, a.cats[k]]).sort((x, y) => y[1] - x[1]);
+      const top = Math.max(...ordered.map((x) => x[1]), 0.0001);
+      ordered.forEach(([key, val]) => {
+        const share = total > 0 ? Math.round((val / total) * 100) : 0;
+        list.append(h('li', {},
+          h('div', { class: 'flex items-center justify-between gap-3 text-sm' },
+            h('span', { class: 'flex items-center gap-2 font-semibold' }, h('span', { class: 'inline-block h-3 w-3 rounded-sm', style: `background:${CAT_COLOR[key]}`, 'aria-hidden': 'true' }), CAT_NAME[key]),
+            h('span', { class: 'tabular-nums' }, `${fmt(val)} kg · ${share}%`)),
+          h('div', { class: 'mt-1.5 h-3 rounded-sm bg-sage', 'aria-hidden': 'true' },
+            h('div', { class: 'h-3 rounded-sm', style: `width:${(val / top) * 100}%;background:${CAT_COLOR[key]}` }))));
+      });
+      $('#cat-total').textContent = fmt(total);
+
+      // Table version of the bar chart
+      const tbody = $('#bars-table');
+      tbody.replaceChildren();
+      dayLabels().forEach((date, i) => {
+        const v = a.byDay[i];
+        tbody.append(h('tr', { class: 'border-b border-ink/10' },
+          h('th', { scope: 'row', class: 'py-2 pr-4 font-normal' }, h('time', { datetime: date }, niceDate(date, true))),
+          h('td', { class: 'py-2 pr-4 text-right tabular-nums' }, fmt(v)),
+          h('td', { class: 'py-2' }, v === 0 ? 'Nothing logged' : v > DAILY_BUDGET ? `${fmt(v - DAILY_BUDGET)} kg over` : 'Within budget')));
+      });
+
+      $('#worker-status').textContent = analysisMode === 'worker'
+        ? 'These figures were calculated in a Web Worker, off the main thread.'
+        : 'Web Workers are not available here, so these figures were calculated on the main thread.';
+
+      const over = a.byDay.filter((v) => v > DAILY_BUDGET).length;
+      const maxV = Math.max(...a.byDay);
+      const maxIdx = a.byDay.indexOf(maxV);
+      $('#donut').setAttribute('aria-label', total > 0
+        ? 'Donut chart of the last 30 days: ' + ordered.map(([k, v]) => `${CAT_NAME[k]} ${fmt(v)} kg`).join(', ') + '.'
+        : 'Donut chart with no data yet.');
+      $('#bars').setAttribute('aria-label', maxV > 0
+        ? `Bar chart of daily emissions for the last 14 days. ${over} days went over the ${DAILY_BUDGET} kg budget. The highest day was ${niceDate(dayLabels()[maxIdx], true)} at ${fmt(maxV)} kg.`
+        : 'Bar chart of daily emissions for the last 14 days. Nothing logged yet.');
+    }
+    const dayLabels = () => Array.from({ length: 14 }, (_, i) => shiftDate(analysis ? analysis.today : todayStr(), i - 13));
+
+    /* =====================================================================
+       Canvas API: donut and bar charts
+       ===================================================================== */
+    const donut = $('#donut');
+    const bars = $('#bars');
+    let barHover = -1;
+    let barGeom = null;
+    let donutShown = false;
+
+    function fitCanvas(c) {
+      const dpr = window.devicePixelRatio || 1;
+      const w = c.clientWidth, hgt = c.clientHeight;
+      if (!w || !hgt) return null;
+      if (c.width !== Math.round(w * dpr) || c.height !== Math.round(hgt * dpr)) { c.width = Math.round(w * dpr); c.height = Math.round(hgt * dpr); }
+      const ctx = c.getContext('2d');
+      if (!ctx) return null;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, hgt);
+      return { ctx, w, h: hgt };
+    }
+
+    function drawDonut(progress) {
+      const f = fitCanvas(donut);
+      if (!f || !analysis) return;
+      const { ctx, w, h: hgt } = f;
+      const cx = w / 2, cy = hgt / 2;
+      const R = Math.min(w, hgt) / 2 - 4, lw = R * 0.28, r = R - lw / 2;
+      const total = analysis.monthTotal;
+
+      ctx.lineWidth = lw; ctx.lineCap = 'butt';
+      ctx.strokeStyle = '#EAF1EC';
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+
+      if (total > 0) {
+        let start = -Math.PI / 2;
+        CAT_ORDER.forEach((key) => {
+          const v = analysis.cats[key];
+          if (v <= 0) return;
+          const sweep = (v / total) * Math.PI * 2 * progress;
+          ctx.beginPath();
+          ctx.strokeStyle = CAT_COLOR[key];
+          ctx.arc(cx, cy, r, start, start + Math.max(sweep - 0.03, 0.002));
+          ctx.stroke();
+          start += sweep;
+        });
+      }
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#0F4C47';
+      ctx.font = `${Math.round(R * 0.3)}px "Young Serif", Georgia, serif`;
+      ctx.fillText(fmt(total), cx, cy - R * 0.06);
+      ctx.fillStyle = 'rgba(23,48,45,.72)';
+      ctx.font = `600 ${Math.max(11, Math.round(R * 0.105))}px "Hanken Grotesk", system-ui, sans-serif`;
+      ctx.fillText('kg CO₂e, 30 days', cx, cy + R * 0.2);
+    }
+
+    function drawBars() {
+      const f = fitCanvas(bars);
+      if (!f || !analysis) return;
+      const { ctx, w, h: hgt } = f;
+      const vals = analysis.byDay;
+      const pad = { l: 34, r: 8, t: 30, b: 26 };
+      const iw = w - pad.l - pad.r, ih = hgt - pad.t - pad.b;
+      const niceMax = Math.max(4, Math.ceil(Math.max(DAILY_BUDGET * 1.3, ...vals) / 2) * 2);
+      const y = (v) => pad.t + ih - (v / niceMax) * ih;
+      const slot = iw / vals.length;
+      const bw = Math.min(slot * 0.62, 30);
+      barGeom = { padL: pad.l, slot, count: vals.length };
+
+      ctx.font = '12px "Hanken Grotesk", system-ui, sans-serif';
+      ctx.textBaseline = 'middle'; ctx.textAlign = 'right';
+      ctx.lineWidth = 1;
+      [0, niceMax / 2, niceMax].forEach((tick) => {
+        ctx.strokeStyle = 'rgba(23,48,45,.14)';
+        ctx.beginPath(); ctx.moveTo(pad.l, y(tick) + 0.5); ctx.lineTo(w - pad.r, y(tick) + 0.5); ctx.stroke();
+        ctx.fillStyle = 'rgba(23,48,45,.7)';
+        ctx.fillText(String(tick), pad.l - 6, y(tick));
+      });
+
+      const labels = dayLabels();
+      vals.forEach((v, i) => {
+        const x = pad.l + slot * i + (slot - bw) / 2;
+        const top = y(v);
+        ctx.fillStyle = v > DAILY_BUDGET ? '#C77F00' : '#0F4C47';
+        if (v > 0) ctx.fillRect(x, top, bw, y(0) - top);
+        if (i === barHover) { ctx.strokeStyle = '#17302D'; ctx.lineWidth = 2; ctx.strokeRect(x - 2, Math.min(top, y(0) - 2) - 2, bw + 4, Math.max(y(0) - top, 2) + 4); ctx.lineWidth = 1; }
+        // x labels: day of the month, every second one on narrow screens
+        if (slot >= 24 || i % 2 === vals.length % 2) {
+          ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+          ctx.fillStyle = i === vals.length - 1 ? '#0F4C47' : 'rgba(23,48,45,.72)';
+          ctx.font = (i === vals.length - 1 ? '700 ' : '') + '12px "Hanken Grotesk", system-ui, sans-serif';
+          ctx.fillText(i === vals.length - 1 ? 'Today' : String(Number(labels[i].slice(8))), x + bw / 2, hgt - 8);
+        }
+      });
+
+      // Budget line
+      ctx.setLineDash([6, 4]); ctx.strokeStyle = '#8F5F00'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(pad.l, y(DAILY_BUDGET)); ctx.lineTo(w - pad.r, y(DAILY_BUDGET)); ctx.stroke();
+      ctx.setLineDash([]);
+      // Key for the dashed line, above the plot so it never covers a bar
+      ctx.setLineDash([6, 4]); ctx.strokeStyle = '#8F5F00'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(pad.l, 9); ctx.lineTo(pad.l + 26, 9); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.font = '600 12px "Hanken Grotesk", system-ui, sans-serif';
+      ctx.fillStyle = '#8F5F00'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.fillText(`Daily budget, ${DAILY_BUDGET} kg`, pad.l + 34, 9);
+    }
+
+    function barIndexAt(evt) {
+      if (!barGeom) return -1;
+      const rect = bars.getBoundingClientRect();
+      const i = Math.floor((evt.clientX - rect.left - barGeom.padL) / barGeom.slot);
+      return i >= 0 && i < barGeom.count ? i : -1;
+    }
+    function showBar(i) {
+      barHover = i;
+      drawBars();
+      const readout = $('#bars-readout');
+      if (i < 0 || !analysis) { readout.textContent = 'Hover or tap a bar to see that day. Dark bars stayed within budget, amber bars went over.'; return; }
+      const v = analysis.byDay[i];
+      readout.textContent = `${niceDate(dayLabels()[i], true)}: ${fmt(v)} kg CO₂e, ` + (v === 0 ? 'nothing logged.' : v > DAILY_BUDGET ? `${fmt(v - DAILY_BUDGET)} kg over budget.` : 'within budget.');
+    }
+    bars.addEventListener('pointermove', (e) => showBar(barIndexAt(e)));
+    bars.addEventListener('pointerdown', (e) => showBar(barIndexAt(e)));
+    bars.addEventListener('pointerleave', () => showBar(-1));
+
+    function drawAll(animate) {
+      if (!analysis) return;
+      if (animate && !donutShown && !reduceMotion()) {
+        donutShown = true;
+        const t0 = performance.now();
+        const step = (now) => {
+          const p = Math.min((now - t0) / 700, 1);
+          drawDonut(1 - Math.pow(1 - p, 3));
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      } else {
+        donutShown = true;
+        drawDonut(1);
+      }
+      drawBars();
+    }
+    if ('ResizeObserver' in window) {
+      const ro = new ResizeObserver(() => drawAll(false));
+      ro.observe(donut); ro.observe(bars);
+    } else {
+      window.addEventListener('resize', () => drawAll(false));
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => drawAll(false));
+
+    /* =====================================================================
+       Drag and Drop API: pledges
+       ===================================================================== */
+    let dragging = null; // { from: 'suggest' | 'pledge', id }
+    const suggestZone = $('#suggest-zone');
+    const pledgeZone = $('#pledge-zone');
+
+    function dragHandlers(from, id) {
+      return {
+        draggable: 'true',
+        ondragstart: (e) => {
+          dragging = { from, id };
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('text/plain', from + ':' + id);
+          e.currentTarget.classList.add('is-dragging');
+        },
+        ondragend: (e) => { dragging = null; e.currentTarget.classList.remove('is-dragging'); suggestZone.classList.remove('drop-active'); pledgeZone.classList.remove('drop-active'); }
+      };
+    }
+    function wireDropZone(zone, accepts, onDrop) {
+      zone.addEventListener('dragover', (e) => {
+        if (!dragging || dragging.from !== accepts) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        zone.classList.add('drop-active');
+      });
+      zone.addEventListener('dragleave', (e) => { if (!zone.contains(e.relatedTarget)) zone.classList.remove('drop-active'); });
+      zone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        zone.classList.remove('drop-active');
+        if (dragging && dragging.from === accepts) onDrop(dragging.id);
+        dragging = null;
+      });
+    }
+    wireDropZone(pledgeZone, 'suggest', (id) => addPledge(id));
+    wireDropZone(suggestZone, 'pledge', (id) => removePledge(id));
+
+    function addPledge(id) {
+      if (state.pledges.some((p) => p.id === id) || !analysis) return;
+      const rec = analysis.recs.find((r) => r.id === id);
+      if (!rec) return;
+      state.pledges.push({ id, title: rec.title, saving: rec.saving });
+      save(); renderSuggestions(); renderPledges();
+      toast('Pledged: ' + rec.title);
+    }
+    function removePledge(id) {
+      const p = state.pledges.find((x) => x.id === id);
+      state.pledges = state.pledges.filter((x) => x.id !== id);
+      save(); renderSuggestions(); renderPledges();
+      if (p) toast('Removed from pledges.');
+    }
+
+    function renderSuggestions() {
+      const list = $('#suggest-list');
+      list.replaceChildren();
+      const pledged = new Set(state.pledges.map((p) => p.id));
+      const recs = (analysis ? analysis.recs : []).filter((r) => !pledged.has(r.id));
+      $('#suggest-title').textContent = recs.length ? `The ${recs.length === 1 ? 'change' : recs.length + ' changes'} that would cut the most` : 'Changes that would cut the most';
+
+      if (!recs.length) {
+        list.append(h('li', { class: 'py-6 text-ink/80' }, state.pledges.length
+          ? 'You have pledged every suggested change. Keep logging to see new ideas.'
+          : 'Log a few days of travel, electricity and meals and the biggest savings will appear here.'));
+        return;
+      }
+      recs.forEach((r, i) => {
+        list.append(h('li', Object.assign({ class: 'grid grid-cols-[2rem_1fr] gap-x-4 py-6 sm:grid-cols-[3rem_1fr_7rem]', title: 'Drag to your pledges' }, dragHandlers('suggest', r.id)),
+          h('span', { class: 'col-start-1 row-start-1 font-display text-3xl text-spruce/50' }, String(i + 1)),
+          h('div', { class: 'col-start-2 row-start-1' },
+            h('h4', { class: 'text-lg font-bold' }, r.title),
+            h('p', { class: 'mt-1 text-ink/80' }, r.detail),
+            h('button', { type: 'button', class: 'mt-3 rounded-md border border-spruce px-3 py-1.5 text-sm font-semibold text-spruce transition-colors hover:bg-spruce hover:text-white', onclick: () => addPledge(r.id) },
+              'Pledge this', h('span', { class: 'sr-only' }, ': ' + r.title))),
+          h('p', { class: 'col-start-2 row-start-2 mt-3 sm:col-start-3 sm:row-start-1 sm:mt-0 sm:text-right' },
+            h('span', { class: 'block text-lg font-bold text-leaf' }, '−' + fmt(r.saving) + ' kg'),
+            h('span', { class: 'text-sm text-ink/70' }, 'per month'))));
+      });
+    }
+
+    function renderPledges() {
+      const list = $('#pledge-list');
+      list.replaceChildren();
+      state.pledges.forEach((p) => {
+        list.append(h('li', Object.assign({ class: 'flex items-start justify-between gap-3 border-b border-ink/15 py-3', title: 'Drag back to remove' }, dragHandlers('pledge', p.id)),
+          h('div', {}, h('p', { class: 'font-semibold' }, p.title), h('p', { class: 'text-sm font-bold text-leaf' }, '−' + fmt(p.saving) + ' kg a month')),
+          h('button', { type: 'button', class: 'shrink-0 rounded px-2 py-1 text-sm font-semibold text-red-700 hover:bg-sage', onclick: () => removePledge(p.id) }, 'Remove', h('span', { class: 'sr-only' }, ': ' + p.title))));
+      });
+      $('#pledge-empty').classList.toggle('hidden', state.pledges.length > 0);
+      const totalBox = $('#pledge-total');
+      totalBox.classList.toggle('hidden', state.pledges.length === 0);
+      const sum = state.pledges.reduce((s, p) => s + p.saving, 0);
+      $('#pledge-kg').textContent = fmt(sum);
+      const month = analysis ? analysis.monthTotal : 0;
+      $('#pledge-note').textContent = `${fmt(sum * 12)} kg a year` + (month > 0 ? `, ${Math.round((sum / month) * 100)}% of your last 30 days.` : '.');
+    }
+
+    /* =====================================================================
+       File API, Blob and URL: export and import
+       ===================================================================== */
+    function download(name, text, type) {
+      const blob = new Blob([text], { type });
+      const url = URL.createObjectURL(blob);
+      const a = h('a', { href: url, download: name });
+      document.body.append(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+    const csvCell = (v) => /[",\n]/.test(String(v)) ? '"' + String(v).replace(/"/g, '""') + '"' : String(v);
+
+    $('#export-csv').addEventListener('click', () => {
+      if (!state.entries.length) { toast('There is nothing to download yet.'); return; }
+      const rows = [...state.entries].sort((a, b) => a.date.localeCompare(b.date) || a.ts - b.ts);
+      const csv = ['date,category,activity,amount,unit,kg_co2e'].concat(rows.map((e) => [e.date, CAT_NAME[e.cat], e.label, e.amount, e.unit, e.kg].map(csvCell).join(','))).join('\r\n');
+      download(`carbon-log-${todayStr()}.csv`, '\ufeff' + csv, 'text/csv;charset=utf-8');
+      toast('CSV downloaded.');
+    });
+    $('#export-json').addEventListener('click', () => {
+      const data = { app: 'carbonfootprint-india', version: 1, exportedAt: new Date().toISOString(), entries: state.entries, pledges: state.pledges };
+      download(`carbon-backup-${todayStr()}.json`, JSON.stringify(data, null, 2), 'application/json');
+      toast('Backup downloaded.');
+    });
+
+    const importStatus = $('#import-status');
+    function importFile(file) {
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) { importStatus.textContent = 'That file is larger than 2 MB. Choose a JSON backup downloaded from this page.'; return; }
+      const reader = new FileReader();
+      reader.onerror = () => { importStatus.textContent = 'The file could not be read. Try again.'; };
+      reader.onload = () => {
+        let data;
+        try { data = JSON.parse(String(reader.result)); }
+        catch { importStatus.textContent = 'That file is not valid JSON. Choose a backup downloaded from this page.'; return; }
+        if (!data || !Array.isArray(data.entries)) { importStatus.textContent = 'That file does not look like a CarbonFootprint backup.'; return; }
+        const known = new Set(state.entries.map((e) => e.id));
+        let added = 0;
+        data.entries.slice(0, 5000).forEach((raw) => {
+          const e = cleanEntry(raw);
+          if (e && !known.has(e.id)) { state.entries.push(e); known.add(e.id); added++; }
+        });
+        const skipped = Math.min(data.entries.length, 5000) - added;
+        if (Array.isArray(data.pledges)) {
+          data.pledges.map(cleanPledge).filter(Boolean).forEach((p) => { if (!state.pledges.some((x) => x.id === p.id)) state.pledges.push(p); });
+        }
+        commit();
+        importStatus.textContent = `Imported ${added} ${added === 1 ? 'entry' : 'entries'}.` + (skipped > 0 ? ` Skipped ${skipped} that were duplicates or not valid.` : '');
+      };
+      reader.readAsText(file);
+    }
+    $('#import-file').addEventListener('change', (e) => { importFile(e.target.files[0]); e.target.value = ''; });
+
+    const dropzone = $('#dropzone');
+    ['dragenter', 'dragover'].forEach((type) => dropzone.addEventListener(type, (e) => {
+      if (!e.dataTransfer || ![...e.dataTransfer.types].includes('Files')) return;
+      e.preventDefault(); dropzone.classList.add('drop-active');
+    }));
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drop-active'));
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault(); dropzone.classList.remove('drop-active');
+      importFile(e.dataTransfer.files[0]);
+    });
+    // A file dropped outside the zone should not make the browser navigate away
+    ['dragover', 'drop'].forEach((type) => window.addEventListener(type, (e) => {
+      if (e.dataTransfer && [...e.dataTransfer.types].includes('Files') && !e.target.closest('#dropzone')) e.preventDefault();
+    }));
+
+    // Clear everything through a native <dialog>
+    const confirmDialog = $('#confirm-dialog');
+    $('#clear-all').addEventListener('click', () => {
+      if (typeof confirmDialog.showModal === 'function') confirmDialog.showModal();
+      else if (window.confirm('Clear all data from this browser?')) clearAll();
+    });
+    confirmDialog.addEventListener('close', () => { if (confirmDialog.returnValue === 'confirm') clearAll(); confirmDialog.returnValue = ''; });
+    function clearAll() {
+      state.entries = []; state.pledges = [];
+      commit();
+      toast('All data cleared.');
+    }
+
+    /* =====================================================================
+       Web Share and Clipboard APIs
+       ===================================================================== */
+    $('#share-button').addEventListener('click', async () => {
+      if (!analysis || analysis.monthTotal <= 0) { toast('Log a few activities first, then share your summary.'); return; }
+      const total = analysis.monthTotal;
+      const annualT = (total / 30) * 365 / 1000;
+      let text = `In the last 30 days I logged ${fmt(total)} kg CO₂e`;
+      if (analysis.prevTotal > 0) text += `, ${Math.round((Math.abs(total - analysis.prevTotal) / analysis.prevTotal) * 100)}% ${total <= analysis.prevTotal ? 'lower' : 'higher'} than the 30 days before`;
+      text += `. At this pace that is ${fmtT(annualT)} t a year, against a 2.3 t target. Tracked with CarbonFootprint India.`;
+      const data = { title: 'My carbon footprint', text };
+      const box = $('#share-box');
+      try {
+        if (navigator.share && (!navigator.canShare || navigator.canShare(data))) {
+          await navigator.share(data);
+          return;
+        }
+      } catch (err) {
+        if (err && err.name === 'AbortError') return; // the person closed the share sheet
+      }
+      try {
+        await navigator.clipboard.writeText(text);
+        toast('Summary copied. Paste it wherever you like.');
+        box.classList.add('hidden');
+      } catch {
+        box.value = text;
+        box.classList.remove('hidden');
+        box.focus(); box.select();
+      }
+    });
+
+    /* =====================================================================
+       Live feature check for the "HTML5 APIs" table
+       ===================================================================== */
+    const CHECKS = {
+      storage: () => { try { localStorage.setItem('__cfi', '1'); localStorage.removeItem('__cfi'); return 'sessionStorage' in window; } catch { return false; } },
+      geolocation: () => 'geolocation' in navigator,
+      canvas: () => !!document.createElement('canvas').getContext,
+      dnd: () => 'draggable' in document.createElement('span') && 'ondrop' in document.createElement('div'),
+      worker: () => typeof Worker === 'function',
+      notifications: () => 'Notification' in window,
+      file: () => 'FileReader' in window && 'Blob' in window && !!(window.URL && URL.createObjectURL),
+      share: () => (navigator.share ? true : navigator.clipboard ? 'partial' : false),
+      validation: () => { const i = document.createElement('input'); return 'checkValidity' in i && 'setCustomValidity' in i && 'validity' in i; },
+      observer: () => 'IntersectionObserver' in window
+    };
+    const NOTES = {
+      storage: () => storageOK ? 'Data is being saved.' : 'Saving is blocked in this browser.',
+      geolocation: () => window.isSecureContext ? 'Asks permission when you start a trip.' : 'Needs https or localhost. Use the demo walk here.',
+      worker: () => analysisMode === 'worker' ? 'Running the analysis now.' : analysisMode === 'main' ? 'Not running here. Using the main thread.' : '',
+      notifications: () => notifSupported() ? 'Permission: ' + Notification.permission + '.' : '',
+      share: (res) => res === 'partial' ? 'No share sheet here. Falls back to copying.' : res === true ? 'Share sheet available.' : '',
+      dnd: () => 'Touch screens use the Pledge buttons.'
+    };
+    function refreshApiTable() {
+      document.querySelectorAll('[data-api]').forEach((row) => {
+        const key = row.dataset.api;
+        let res = false;
+        try { res = CHECKS[key](); } catch { res = false; }
+        const badge = row.querySelector('[data-support]');
+        badge.textContent = res === true ? 'Supported' : res === 'partial' ? 'Partly supported' : 'Not supported';
+        badge.className = 'font-semibold ' + (res === true ? 'text-leaf' : res === 'partial' ? 'text-marigold-deep' : 'text-red-700');
+        row.querySelector('[data-note]').textContent = NOTES[key] ? NOTES[key](res) : '';
+      });
+    }
+
+    /* =====================================================================
+       Start-up
+       ===================================================================== */
+    function commit() { save(); refreshAll(); }
+    function refreshAll() {
+      renderReceipt();
+      renderLog();
+      renderPledges();
+      runAnalysis(); // charts, stats and suggestions follow in onAnalysis()
+    }
+
+    fillOptions('travel');
+    restoreDraft();
+    dateInput.value = todayStr();
+    validateDate();
+    update();
+    setupWorker();
+    updateReminderUI();
+    refreshApiTable();
+    refreshAll();
+    setInterval(() => { if (toStr(new Date()) !== $('#receipt-date').getAttribute('datetime')) { dateInput.value = todayStr(); validateDate(); refreshAll(); } }, 60000);
+  </script>
+</body>
+</html>

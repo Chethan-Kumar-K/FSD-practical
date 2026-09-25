@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth motion-reduce:scroll-auto">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CarbonFootprint India turns your travel, electricity, food and shopping into a running carbon total and shows which changes cut it most." />
+  <title>CarbonFootprint India | Dashboard</title>
+
+  <!-- Fonts: Young Serif for headings and big numbers, Hanken Grotesk for everything else -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN with the official Typography plugin (?plugins=typography) -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Hanken Grotesk"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            display: ['"Young Serif"', 'Georgia', 'serif']
+          },
+          colors: {
+            ink: '#17302D',
+            spruce: { DEFAULT: '#0F4C47', deep: '#0A3532' },
+            marigold: { DEFAULT: '#F2A900', deep: '#8F5F00' },
+            sage: { DEFAULT: '#EAF1EC', dark: '#D5E2DA' },
+            leaf: '#2F7D57'
+          },
+          // Custom Typography themes: "prose-carbon" for light backgrounds, "prose-hero" for the dark hero
+          typography: {
+            carbon: {
+              css: {
+                '--tw-prose-body': '#17302D',
+                '--tw-prose-headings': '#0F4C47',
+                '--tw-prose-lead': '#2B4A46',
+                '--tw-prose-links': '#0F4C47',
+                '--tw-prose-bold': '#0F4C47',
+                '--tw-prose-counters': '#0F4C47',
+                '--tw-prose-bullets': '#F2A900',
+                '--tw-prose-hr': '#D5E2DA',
+                '--tw-prose-quotes': '#0F4C47',
+                '--tw-prose-quote-borders': '#F2A900',
+                'h1, h2, h3': { fontFamily: '"Young Serif", Georgia, serif', fontWeight: '400', letterSpacing: '-0.01em' }
+              }
+            },
+            hero: {
+              css: {
+                '--tw-prose-body': '#D5E8E2',
+                '--tw-prose-headings': '#FFFFFF',
+                '--tw-prose-lead': '#D5E8E2',
+                '--tw-prose-links': '#F2A900',
+                '--tw-prose-bold': '#FFFFFF',
+                '--tw-prose-bullets': '#F2A900',
+                'h1, h2, h3': { fontFamily: '"Young Serif", Georgia, serif', fontWeight: '400', letterSpacing: '-0.01em' }
+              }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Visible keyboard focus: dark ring on light areas, marigold ring on dark areas */
+    :focus-visible { outline: 3px solid #0F4C47; outline-offset: 3px; }
+    .on-dark :focus-visible { outline-color: #F2A900; }
+  </style>
+</head>
+<body class="bg-white font-sans text-ink antialiased">
+
+  <!-- Skip link for keyboard and screen-reader users -->
+  <a href="#main" class="sr-only rounded-md bg-white px-4 py-2 font-semibold text-spruce focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60]">Skip to main content</a>
+
+  <!-- Header with navigation. Sticky, so the navigation stays in reach while scrolling. -->
+  <header class="sticky top-0 z-50 border-b border-ink/10 bg-white/95 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+      <a href="#home" class="flex items-center gap-3" aria-label="CarbonFootprint India, home">
+        <svg class="h-9 w-9 shrink-0" viewBox="0 0 36 36" aria-hidden="true">
+          <rect width="36" height="36" rx="8" fill="#0F4C47" />
+          <path d="M11 9h14v18l-3.5-2.5L18 27l-3.5-2.5L11 27V9Z" fill="#fff" />
+          <path d="M14 14h8M14 18h8" stroke="#0F4C47" stroke-width="1.8" stroke-linecap="round" />
+          <circle cx="26" cy="26" r="5" fill="#F2A900" />
+        </svg>
+        <span>
+          <span class="block font-display text-lg leading-tight text-spruce">CarbonFootprint India</span>
+          <span class="hidden text-xs text-ink/70 sm:block">Track. Understand. Reduce.</span>
+        </span>
+      </a>
+
+      <button id="menuButton" type="button" class="rounded-md border border-ink/20 p-2 text-spruce hover:bg-sage md:hidden" aria-label="Open navigation menu" aria-controls="mainNav" aria-expanded="false">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <nav id="mainNav" class="absolute inset-x-0 top-full hidden border-b border-ink/10 bg-white px-4 pb-4 pt-2 shadow-lg md:static md:block md:border-0 md:bg-transparent md:p-0 md:shadow-none" aria-label="Main navigation">
+        <ul class="flex flex-col gap-1 md:flex-row md:items-center md:gap-2">
+          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce md:py-3" href="#home" aria-current="true">Home</a></li>
+          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce md:py-3" href="#activities">Log Activity</a></li>
+          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce md:py-3" href="#insights">Insights</a></li>
+          <li><a data-nav class="block border-b-2 border-transparent px-3 py-2 text-sm font-semibold text-ink/80 hover:text-spruce aria-[current=true]:border-marigold aria-[current=true]:text-spruce md:py-3" href="#about">About</a></li>
+          <li><a class="mt-2 block rounded-md bg-spruce px-4 py-2.5 text-center text-sm font-bold text-white transition-colors hover:bg-spruce-deep md:mt-0 md:ml-2" href="#activities">Start tracking</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- Hero: headline plus a "carbon receipt" of one sample day -->
+    <section id="home" class="on-dark bg-spruce text-white">
+      <div class="mx-auto grid max-w-6xl gap-12 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:px-8 lg:py-24">
+
+        <div class="prose prose-hero prose-lg max-w-xl">
+          <h1 class="text-4xl leading-[1.08] sm:text-5xl lg:text-6xl">Your day has a carbon bill. See it, then cut the biggest line.</h1>
+          <p class="mt-6 text-lg">CarbonFootprint India turns your travel, electricity, food and shopping into a running total, and shows which changes cut it most.</p>
+          <!-- not-prose stops the Typography plugin from underlining the button links -->
+          <div class="not-prose mt-8 flex flex-wrap gap-3">
+            <a href="#activities" class="rounded-md bg-marigold px-6 py-3 font-bold text-spruce-deep transition-colors hover:bg-white">Log today’s activity</a>
+            <a href="#insights" class="rounded-md border border-white/40 px-6 py-3 font-bold text-white transition-colors hover:bg-white/10">See where a month goes</a>
+          </div>
+        </div>
+
+        <!-- The receipt: the one memorable element on the page -->
+        <section aria-labelledby="receipt-title" class="mx-auto w-full max-w-md text-ink drop-shadow-xl lg:ml-auto">
+          <div class="bg-white px-6 pt-7 sm:px-8">
+            <div class="flex items-baseline justify-between gap-4">
+              <h2 id="receipt-title" class="font-display text-2xl text-spruce">Your carbon receipt</h2>
+              <p class="text-sm text-ink/70">Sample day</p>
+            </div>
+
+            <ul class="mt-6 space-y-3 text-[15px]">
+              <li class="flex items-baseline gap-2"><span>Metro, 15 km</span><span class="flex-1 border-b border-dotted border-ink/30" aria-hidden="true"></span><span class="font-semibold tabular-nums">0.6 kg</span></li>
+              <li class="flex items-baseline gap-2"><span>Auto-rickshaw, 10 km</span><span class="flex-1 border-b border-dotted border-ink/30" aria-hidden="true"></span><span class="font-semibold tabular-nums">0.9 kg</span></li>
+              <li class="-mx-3 flex items-baseline gap-2 rounded bg-marigold/25 px-3 py-1.5">
+                <span>Electricity, 5 kWh <span class="ml-1 rounded-sm bg-marigold px-1.5 py-0.5 text-xs font-bold text-spruce-deep">Largest</span></span>
+                <span class="flex-1 border-b border-dotted border-ink/30" aria-hidden="true"></span>
+                <span class="font-semibold tabular-nums">3.5 kg</span>
+              </li>
+              <li class="flex items-baseline gap-2"><span>Chicken meal, 1</span><span class="flex-1 border-b border-dotted border-ink/30" aria-hidden="true"></span><span class="font-semibold tabular-nums">1.5 kg</span></li>
+              <li class="flex items-baseline gap-2"><span>Vegetarian meals, 2</span><span class="flex-1 border-b border-dotted border-ink/30" aria-hidden="true"></span><span class="font-semibold tabular-nums">1.2 kg</span></li>
+            </ul>
+
+            <div class="mt-6 flex items-baseline justify-between border-t-2 border-ink pt-4">
+              <p class="font-semibold">Total today</p>
+              <p class="font-display text-4xl tabular-nums text-spruce">7.7 <span class="font-sans text-base text-ink/70">kg CO₂e</span></p>
+            </div>
+            <p class="mt-3 pb-7 text-sm text-ink/80">A 2.3 t a year target allows 6.3 kg a day. This day is 1.4 kg over.</p>
+          </div>
+          <!-- Torn paper edge -->
+          <svg class="block h-3 w-full" aria-hidden="true">
+            <defs><pattern id="teeth" width="16" height="12" patternUnits="userSpaceOnUse"><path d="M0 0H16L8 12Z" fill="#fff" /></pattern></defs>
+            <rect width="100%" height="12" fill="url(#teeth)" />
+          </svg>
+        </section>
+      </div>
+    </section>
+
+    <!-- Log an activity: one working estimator instead of four dead buttons -->
+    <section id="activities" class="scroll-mt-20 border-b border-ink/10 bg-white">
+      <div class="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-5 lg:gap-14 lg:px-8 lg:py-20">
+
+        <div class="prose prose-carbon prose-lg lg:col-span-2">
+          <h2 class="text-3xl">Log an activity and see what it costs in carbon</h2>
+          <p>Pick a category, choose what you did and enter how much. The estimate updates as you type and uses everyday Indian conditions: two-wheelers, auto-rickshaws, the metro and LPG cooking gas.</p>
+          <p class="text-base">Emission factors here are illustrative. A production version would use verified figures.</p>
+        </div>
+
+        <form id="estimator" class="rounded-xl border border-ink/20 bg-sage p-5 sm:p-7 lg:col-span-3" novalidate>
+          <fieldset>
+            <legend class="text-sm font-semibold">Category</legend>
+            <div class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
+              <div>
+                <input class="peer sr-only" type="radio" name="category" id="cat-travel" value="travel" checked />
+                <label for="cat-travel" class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Travel</label>
+              </div>
+              <div>
+                <input class="peer sr-only" type="radio" name="category" id="cat-energy" value="energy" />
+                <label for="cat-energy" class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Home energy</label>
+              </div>
+              <div>
+                <input class="peer sr-only" type="radio" name="category" id="cat-food" value="food" />
+                <label for="cat-food" class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Food</label>
+              </div>
+              <div>
+                <input class="peer sr-only" type="radio" name="category" id="cat-shopping" value="shopping" />
+                <label for="cat-shopping" class="block cursor-pointer rounded-md border border-ink/20 bg-white px-3 py-2.5 text-center text-sm font-semibold transition-colors hover:border-spruce peer-checked:border-spruce peer-checked:bg-spruce peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-spruce">Shopping</label>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="mt-6 grid gap-4 sm:grid-cols-2">
+            <div>
+              <label for="kind" class="block text-sm font-semibold">What did you do?</label>
+              <select id="kind" class="mt-1.5 block w-full rounded-md border border-ink/30 bg-white px-3 py-2.5"></select>
+            </div>
+            <div>
+              <label for="amount" class="block text-sm font-semibold">How much?</label>
+              <div class="mt-1.5 flex">
+                <input id="amount" type="number" min="0" step="any" inputmode="decimal" value="10" class="block w-full min-w-0 rounded-l-md border border-ink/30 bg-white px-3 py-2.5" />
+                <span id="unit" class="inline-flex items-center rounded-r-md border border-l-0 border-ink/30 bg-white px-3 text-sm text-ink/70">km</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 rounded-lg bg-white p-5" aria-live="polite">
+            <p class="font-display text-4xl tabular-nums text-spruce"><span id="result-num">0.4</span> <span class="font-sans text-base text-ink/70">kg CO₂e</span></p>
+            <p id="result-context" class="mt-2 text-sm text-ink/80"></p>
+            <p id="result-tip" class="mt-1 text-sm font-semibold text-leaf"></p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Insights: monthly breakdown and ranked actions -->
+    <section id="insights" class="scroll-mt-20 bg-sage">
+      <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <div class="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
+
+          <div class="prose prose-carbon prose-lg">
+            <h2 class="text-3xl">Where this month’s 184.6 kg came from</h2>
+            <p>Footprints are lopsided. Seeing the split shows which habit is worth changing first.</p>
+            <ul>
+              <li>A category-wise breakdown of everything you log.</li>
+              <li>A monthly total compared with last month.</li>
+              <li>Ranked changes, with the kilograms each one would save.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-display text-xl text-spruce">This month by category</h3>
+            <!-- Bar widths are proportional to the values: the largest source (82 kg) is 100% -->
+            <ul class="mt-5 space-y-5">
+              <li>
+                <div class="flex justify-between text-sm"><span class="font-semibold">Transportation</span><span class="tabular-nums">82 kg</span></div>
+                <div class="mt-1.5 h-3 rounded-sm bg-white" aria-hidden="true"><div class="h-3 w-full rounded-sm bg-marigold"></div></div>
+              </li>
+              <li>
+                <div class="flex justify-between text-sm"><span class="font-semibold">Home energy</span><span class="tabular-nums">56 kg</span></div>
+                <div class="mt-1.5 h-3 rounded-sm bg-white" aria-hidden="true"><div class="h-3 w-[68%] rounded-sm bg-spruce"></div></div>
+              </li>
+              <li>
+                <div class="flex justify-between text-sm"><span class="font-semibold">Food</span><span class="tabular-nums">31 kg</span></div>
+                <div class="mt-1.5 h-3 rounded-sm bg-white" aria-hidden="true"><div class="h-3 w-[38%] rounded-sm bg-spruce"></div></div>
+              </li>
+              <li>
+                <div class="flex justify-between text-sm"><span class="font-semibold">Shopping</span><span class="tabular-nums">15.6 kg</span></div>
+                <div class="mt-1.5 h-3 rounded-sm bg-white" aria-hidden="true"><div class="h-3 w-[19%] rounded-sm bg-spruce"></div></div>
+              </li>
+            </ul>
+            <div class="mt-6 flex items-baseline justify-between border-t-2 border-ink pt-3">
+              <p class="font-semibold">Total</p>
+              <p class="font-display text-2xl tabular-nums text-spruce">184.6 kg</p>
+            </div>
+            <p class="mt-1 text-sm text-ink/80">12.4% lower than last month. Sample data.</p>
+          </div>
+        </div>
+
+        <!-- Ranked list: numbers are used here because the order is the point -->
+        <div class="mt-16 border-t border-ink/20 pt-12">
+          <h3 class="font-display text-2xl text-spruce sm:text-3xl">Three changes that would cut the most</h3>
+          <ol class="mt-8 divide-y divide-ink/20 border-y border-ink/20">
+            <li class="grid grid-cols-[2rem_1fr] gap-x-4 py-6 sm:grid-cols-[3rem_1fr_9rem]">
+              <span class="col-start-1 row-start-1 font-display text-3xl text-spruce/50">1</span>
+              <div class="col-start-2 row-start-1">
+                <h4 class="text-lg font-bold">Take the metro or a bus for three car trips a week</h4>
+                <p class="mt-1 text-ink/80">Transport is your largest source. Trading 12 km car trips for the metro saves the most for the least change.</p>
+              </div>
+              <p class="col-start-2 row-start-2 mt-3 sm:col-start-3 sm:row-start-1 sm:mt-0 sm:text-right"><span class="block text-lg font-bold text-leaf">−20 kg</span><span class="text-sm text-ink/70">per month</span></p>
+            </li>
+            <li class="grid grid-cols-[2rem_1fr] gap-x-4 py-6 sm:grid-cols-[3rem_1fr_9rem]">
+              <span class="col-start-1 row-start-1 font-display text-3xl text-spruce/50">2</span>
+              <div class="col-start-2 row-start-1">
+                <h4 class="text-lg font-bold">Set the air conditioner to 24–26 °C</h4>
+                <p class="mt-1 text-ink/80">A few degrees higher cuts electricity use, and electricity is about 30% of your month.</p>
+              </div>
+              <p class="col-start-2 row-start-2 mt-3 sm:col-start-3 sm:row-start-1 sm:mt-0 sm:text-right"><span class="block text-lg font-bold text-leaf">−4 kg</span><span class="text-sm text-ink/70">per month</span></p>
+            </li>
+            <li class="grid grid-cols-[2rem_1fr] gap-x-4 py-6 sm:grid-cols-[3rem_1fr_9rem]">
+              <span class="col-start-1 row-start-1 font-display text-3xl text-spruce/50">3</span>
+              <div class="col-start-2 row-start-1">
+                <h4 class="text-lg font-bold">Swap four chicken meals for vegetarian ones</h4>
+                <p class="mt-1 text-ink/80">Each swap saves about 0.9 kg, so four a month adds up without changing how you eat the rest of the time.</p>
+              </div>
+              <p class="col-start-2 row-start-2 mt-3 sm:col-start-3 sm:row-start-1 sm:mt-0 sm:text-right"><span class="block text-lg font-bold text-leaf">−3.6 kg</span><span class="text-sm text-ink/70">per month</span></p>
+            </li>
+          </ol>
+          <p class="mt-5 text-sm text-ink/80">Together: about 27.6 kg a month, 15% of your footprint. Sample estimates.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer id="about" class="on-dark bg-spruce-deep text-white/80">
+    <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="font-display text-xl text-white">CarbonFootprint India</h2>
+        <p class="mt-3 max-w-sm text-sm leading-6">A student project for tracking everyday emissions and encouraging practical climate action.</p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-white">Explore</h3>
+        <ul class="mt-3 space-y-2 text-sm">
+          <li><a class="underline-offset-4 hover:text-white hover:underline" href="#activities">Log Activity</a></li>
+          <li><a class="underline-offset-4 hover:text-white hover:underline" href="#insights">Insights</a></li>
+          <li><a class="underline-offset-4 hover:text-white hover:underline" href="#home">Back to top</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-semibold text-white">About the numbers</h3>
+        <p class="mt-3 text-sm leading-6">Emission values on this exercise page are sample values. A production version would calculate them from verified emission factors.</p>
+      </div>
+    </div>
+    <div class="border-t border-white/10 px-4 py-5 text-center text-xs text-white/70">© 2026 CarbonFootprint India · Sustainability &amp; Environment</div>
+  </footer>
+
+  <script>
+    /* ---------- Mobile menu ---------- */
+    const menuButton = document.getElementById('menuButton');
+    const mainNav = document.getElementById('mainNav');
+
+    function setMenu(open) {
+      mainNav.classList.toggle('hidden', !open);
+      menuButton.setAttribute('aria-expanded', String(open));
+    }
+    menuButton.addEventListener('click', () => setMenu(mainNav.classList.contains('hidden')));
+    mainNav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        if (window.matchMedia('(max-width: 767px)').matches) setMenu(false);
+      });
+    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+
+    /* ---------- Highlight the current section in the navigation ---------- */
+    const navLinks = [...document.querySelectorAll('a[data-nav]')];
+    function markActive(id) {
+      navLinks.forEach((a) => a.setAttribute('aria-current', String(a.getAttribute('href') === '#' + id)));
+    }
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { if (entry.isIntersecting) markActive(entry.target.id); });
+    }, { rootMargin: '-35% 0px -60% 0px' });
+    ['home', 'activities', 'insights'].forEach((id) => spy.observe(document.getElementById(id)));
+    window.addEventListener('scroll', () => {
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) markActive('about');
+    }, { passive: true });
+
+    /* ---------- Activity estimator (illustrative emission factors, kg CO2e per unit) ---------- */
+    const DAILY_BUDGET = 6.3; // 2.3 t a year is about 6.3 kg a day
+    const categories = {
+      travel: {
+        unit: 'km', start: 10, compare: true,
+        options: [
+          { label: 'Metro', factor: 0.04 },
+          { label: 'City bus', factor: 0.05 },
+          { label: 'Two-wheeler (petrol)', factor: 0.05 },
+          { label: 'Auto-rickshaw (CNG)', factor: 0.09 },
+          { label: 'Car (petrol)', factor: 0.17 },
+          { label: 'Domestic flight', factor: 0.15 },
+          { label: 'Walk or cycle', factor: 0 }
+        ]
+      },
+      energy: {
+        unit: 'kWh', start: 5, compare: false,
+        note: 'Emissions depend on the fuel and the power grid, so using less energy is the main lever.',
+        options: [
+          { label: 'Electricity', unit: 'kWh', factor: 0.7 },
+          { label: 'LPG cooking gas', unit: 'kg', factor: 3.0 }
+        ]
+      },
+      food: {
+        unit: 'meals', start: 1, compare: true,
+        options: [
+          { label: 'Vegetarian meal', factor: 0.6 },
+          { label: 'Egg meal', factor: 0.9 },
+          { label: 'Chicken meal', factor: 1.5 },
+          { label: 'Mutton meal', factor: 4.0 }
+        ]
+      },
+      shopping: {
+        unit: 'items', start: 1, compare: false,
+        note: 'Buying second-hand, repairing and keeping things longer avoids most of this.',
+        options: [
+          { label: 'Cotton T-shirt', factor: 7 },
+          { label: 'Jeans', factor: 25 },
+          { label: 'Smartphone', factor: 65 },
+          { label: 'Laptop', factor: 300 }
+        ]
+      }
+    };
+
+    const kindSelect = document.getElementById('kind');
+    const amountInput = document.getElementById('amount');
+    const unitLabel = document.getElementById('unit');
+    const resultNum = document.getElementById('result-num');
+    const resultContext = document.getElementById('result-context');
+    const resultTip = document.getElementById('result-tip');
+
+    const fmt = (n) => n.toLocaleString('en-IN', { maximumFractionDigits: n < 100 ? 1 : 0 });
+    const lowerFirst = (s) => s.charAt(0).toLowerCase() + s.slice(1);
+    const currentKey = () => document.querySelector('input[name="category"]:checked').value;
+
+    function fillOptions(key) {
+      kindSelect.innerHTML = '';
+      categories[key].options.forEach((opt, i) => {
+        const el = document.createElement('option');
+        el.value = String(i);
+        el.textContent = opt.label;
+        kindSelect.appendChild(el);
+      });
+      amountInput.value = categories[key].start;
+    }
+
+    function update() {
+      const cat = categories[currentKey()];
+      const opt = cat.options[Number(kindSelect.value)];
+      unitLabel.textContent = opt.unit || cat.unit;
+
+      const amount = parseFloat(amountInput.value);
+      if (!(amount > 0)) {
+        amountInput.setAttribute('aria-invalid', 'true');
+        resultNum.textContent = '0';
+        resultContext.textContent = 'Enter an amount above 0 to see the estimate.';
+        resultTip.textContent = '';
+        return;
+      }
+      amountInput.removeAttribute('aria-invalid');
+
+      const kg = amount * opt.factor;
+      resultNum.textContent = fmt(kg);
+      resultContext.textContent = kg < DAILY_BUDGET
+        ? `That is ${Math.round((kg / DAILY_BUDGET) * 100)}% of one day’s budget of ${DAILY_BUDGET} kg.`
+        : `That is ${fmt(kg / DAILY_BUDGET)} days of a ${DAILY_BUDGET} kg daily budget.`;
+
+      if (cat.compare) {
+        const best = cat.options.filter((o) => o.factor > 0).reduce((a, b) => (b.factor < a.factor ? b : a));
+        if (opt.factor === 0) {
+          resultTip.textContent = 'Zero emissions. Nothing to cut here.';
+        } else if (opt.factor > best.factor) {
+          const alt = amount * best.factor;
+          resultTip.textContent = `Choosing ${lowerFirst(best.label)} instead would emit ${fmt(alt)} kg, saving ${fmt(kg - alt)} kg.`;
+        } else {
+          resultTip.textContent = 'This is already among the lowest-carbon choices here.';
+        }
+      } else {
+        resultTip.textContent = cat.note;
+      }
+    }
+
+    document.querySelectorAll('input[name="category"]').forEach((radio) => {
+      radio.addEventListener('change', () => { fillOptions(currentKey()); update(); });
+    });
+    kindSelect.addEventListener('change', update);
+    amountInput.addEventListener('input', update);
+
+    fillOptions('travel');
+    update();
+  </script>
+</body>
+</html>
