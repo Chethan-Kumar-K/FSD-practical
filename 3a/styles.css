@@ -1,0 +1,175 @@
+/* Visible keyboard focus: dark ring on light areas, marigold ring on dark areas */
+:focus-visible {
+  outline: 3px solid #0F4C47;
+  outline-offset: 3px;
+}
+
+.on-dark :focus-visible {
+  outline-color: #F2A900;
+}
+
+/* <meter> styled to the palette: green within budget, dark amber once over it */
+meter {
+  appearance: none;
+  -webkit-appearance: none;
+  display: block;
+  width: 100%;
+  height: 0.75rem;
+  border: 0;
+  border-radius: 2px;
+  background: #fff;
+}
+
+meter::-webkit-meter-bar {
+  height: 0.75rem;
+  border: 0;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(23, 48, 45, .18);
+}
+
+meter::-webkit-meter-optimum-value {
+  border-radius: 2px;
+  background: #2F7D57;
+}
+
+meter::-webkit-meter-suboptimum-value {
+  border-radius: 2px;
+  background: #F2A900;
+}
+
+meter::-webkit-meter-even-less-good-value {
+  border-radius: 2px;
+  background: #B45309;
+}
+
+meter::-moz-meter-bar {
+  background: #2F7D57;
+}
+
+meter:-moz-meter-sub-optimum::-moz-meter-bar {
+  background: #F2A900;
+}
+
+meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
+  background: #B45309;
+}
+
+/* Drag and Drop feedback */
+.drop-active {
+  outline: 3px dashed #0F4C47;
+  outline-offset: -3px;
+  background-color: #D5E2DA;
+}
+
+.is-dragging {
+  opacity: .45;
+}
+
+[draggable="true"] {
+  cursor: grab;
+}
+
+/* Events section */
+kbd {
+  border: 1px solid rgba(23, 48, 45, .3);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: #fff;
+  padding: 0 .35em;
+  font: 600 .85em ui-monospace, monospace;
+}
+
+/* mouseover/mouseout: category rows react to hover and keyboard focus */
+#cat-list li[data-cat] {
+  border-radius: 6px;
+  padding: 6px 8px;
+  margin: -6px -8px;
+  transition: background-color .15s;
+}
+
+#cat-list li[data-cat]:hover,
+#cat-list li[data-cat]:focus-visible {
+  background: #EAF1EC;
+}
+
+/* dblclick: log rows can be repeated */
+#log-body tr[data-id] {
+  cursor: copy;
+  user-select: none;
+}
+
+#log-body tr[data-id]:hover {
+  background: #F6FAF7;
+}
+
+/* =====================================================================
+   Theme variables (Tailwind colours read these, so dark mode is one switch)
+   ===================================================================== */
+:root {
+  --c-ink: 23 48 45; --c-spruce: 15 76 71; --c-spruce-deep: 10 53 50; --c-marigold: 242 169 0;
+  --c-marigold-deep: 143 95 0; --c-sage: 234 241 236; --c-sage-dark: 213 226 218; --c-leaf: 47 125 87;
+  --chart-ink: #0F4C47; --chart-text: rgba(23, 48, 45, .72); --chart-grid: rgba(23, 48, 45, .14);
+  --chart-track: #EAF1EC; --chart-budget: #8F5F00;
+}
+
+html.dark {
+  color-scheme: dark;
+  --c-ink: 226 238 232; --c-spruce: 31 110 102; --c-spruce-deep: 8 28 26; --c-marigold-deep: 242 169 0;
+  --c-sage: 22 42 39; --c-sage-dark: 36 64 60; --c-leaf: 94 190 140;
+  --chart-ink: #7FD1BF; --chart-text: rgba(226, 238, 232, .75); --chart-grid: rgba(226, 238, 232, .16);
+  --chart-track: #1E3A36; --chart-budget: #F2A900;
+}
+
+html.dark .bg-white, html.dark meter, html.dark meter::-webkit-meter-bar { background-color: #0F1F1D; }
+html.dark header { background-color: rgba(15, 31, 29, .95); }
+html.dark .bg-ink { background-color: #2A4A45; }
+html.dark .text-spruce { color: #7FD1BF; }
+html.dark .hover\:text-spruce:hover { color: #7FD1BF; }
+html.dark :focus-visible { outline-color: #7FD1BF; }
+html.dark #teeth path { fill: #0F1F1D; }
+html.dark .prose-carbon {
+  --tw-prose-body: #D5E8E2; --tw-prose-headings: #7FD1BF; --tw-prose-lead: #D5E8E2;
+  --tw-prose-links: #7FD1BF; --tw-prose-bold: #fff;
+}
+body, header, section, input, select, textarea { transition: background-color .25s, color .25s, border-color .25s; }
+
+/* Goals: progress elements */
+progress { appearance: none; -webkit-appearance: none; display: block; width: 100%; height: .75rem; margin-top: .4rem; border: 0; border-radius: 2px; background: rgb(var(--c-sage-dark)); }
+progress::-webkit-progress-bar { border-radius: 2px; background: rgb(var(--c-sage-dark)); }
+progress::-webkit-progress-value { border-radius: 2px; background: rgb(var(--c-leaf)); transition: width .6s; }
+progress::-moz-progress-bar { border-radius: 2px; background: rgb(var(--c-leaf)); }
+
+/* Scroll reveal */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+/* Hover and press polish */
+a, button { transition: transform .15s, background-color .2s, color .2s; }
+button:not(:disabled):active { transform: scale(.97); }
+#estimator, #goals, #activities section[aria-labelledby] { transition: transform .25s, box-shadow .25s; }
+#estimator:hover, #goals:hover, #activities section[aria-labelledby]:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(10, 53, 50, .14); }
+
+/* Modern layout: clamp(), aspect-ratio, :has(), container query */
+#home h1 { font-size: clamp(2.25rem, 1.2rem + 4.5vw, 4rem); }
+#bars { height: auto !important; aspect-ratio: 16 / 7; min-height: 13rem; }
+#estimator:has([aria-invalid="true"]) { border-color: #B91C1C; box-shadow: 0 0 0 3px rgba(185, 28, 28, .15); }
+.cq { container-type: inline-size; }
+@container (max-width: 24rem) { #receipt-lines { font-size: 13px; } #receipt-total { font-size: 1.9rem; } }
+
+/* Skeleton shimmer while the analysis runs */
+@keyframes shimmer { to { background-position: -200% 0; } }
+body[data-loading] #stat-today, body[data-loading] #stat-month, body[data-loading] #stat-year {
+  color: transparent; border-radius: 4px; background-size: 200% 100%; animation: shimmer 1.2s linear infinite;
+  background-image: linear-gradient(90deg, rgb(var(--c-sage-dark)) 25%, rgb(var(--c-sage)) 50%, rgb(var(--c-sage-dark)) 75%);
+}
+
+/* Print view: a clean light report */
+@media print {
+  header, footer, #activities, #to-top, #toast, #scroll-progress, #dropzone, #log-filter, #sample-banner, #clear-all, button, .reveal-skip { display: none !important; }
+  * { background: transparent !important; color: #000 !important; box-shadow: none !important; transform: none !important; }
+  .reveal { opacity: 1 !important; }
+  #home { color: #000; border-bottom: 1px solid #000; }
+  section, figure, tr { break-inside: avoid; }
+}
