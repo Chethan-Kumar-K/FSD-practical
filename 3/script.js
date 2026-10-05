@@ -1,3 +1,36 @@
+/* =====================================================================
+   CarbonFootprint India: script overview
+
+   JavaScript events used (non-click):
+     focus, blur           field hints, select-on-focus, tidy amount on blur
+     keydown               shortcuts: /  Alt+1-4  Ctrl+Enter  Esc
+     keyup                 live filter for the activity log
+     input, change         live estimate, category and activity pickers
+     submit                add an entry (with validation)
+     paste                 pulls the number out of pasted text like "12 km"
+     copy                  adds a source line to copied receipt text
+     scroll                progress bar and back-to-top button
+     resize                resets the mobile menu when the window grows
+     hashchange            tab title follows the section you navigate to
+     toggle                <details> summary text changes when opened
+     mouseover, mouseout   category list highlights the donut slice
+     mousemove, mouseleave tooltip that follows the cursor over the donut
+     contextmenu           right-click a log row for a custom menu
+     dblclick              double-click a log row to repeat it today
+     dragstart, dragover, drop   pledges drag and drop, backup file drop
+     pointermove           bar chart readout
+     online, offline       connection status messages
+     visibilitychange      re-check reminders when you return to the tab
+     beforeunload          warns before leaving during a GPS trip
+     DOMContentLoaded      welcome message with today's total
+     storage               keeps several open tabs in sync
+
+   HTML5 APIs used: Web Storage, Geolocation, Canvas, Drag and Drop,
+   Web Workers, Notifications, File API (Blob + URL), Web Share and
+   Clipboard, Constraint Validation, Intersection Observer.
+   Open the browser console to see each event printed as "[event]".
+   ===================================================================== */
+
 'use strict';
 
 /* =====================================================================
@@ -71,7 +104,7 @@ if ('IntersectionObserver' in window) {
   const spy = new IntersectionObserver((entries) => {
     entries.forEach((entry) => { if (entry.isIntersecting) markActive(entry.target.id); });
   }, { rootMargin: '-35% 0px -60% 0px' });
-  ['home', 'activities', 'log', 'insights', 'pledges', 'events', 'apis'].forEach((id) => spy.observe(document.getElementById(id)));
+  ['home', 'activities', 'log', 'insights', 'pledges'].forEach((id) => spy.observe(document.getElementById(id)));
 }
 window.addEventListener('scroll', () => {
   if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) markActive('about');
@@ -692,13 +725,17 @@ function renderReceipt() {
 }
 
 let showAllRows = false;
+let logQuery = '';
 function renderLog() {
   const body = $('#log-body');
   body.replaceChildren();
-  const rows = [...state.entries].sort((a, b) => b.date.localeCompare(a.date) || b.ts - a.ts);
-  const shown = showAllRows ? rows : rows.slice(0, 8);
+  let rows = [...state.entries].sort((a, b) => b.date.localeCompare(a.date) || b.ts - a.ts);
+  const q = logQuery.trim().toLowerCase();
+  if (q) rows = rows.filter((e) => (e.label + ' ' + CAT_NAME[e.cat]).toLowerCase().includes(q));
+  const shown = showAllRows || q ? rows : rows.slice(0, 8);
 
-  if (!rows.length) {
+  if (!rows.length && q) body.append(h('tr', {}, h('td', { colspan: '5', class: 'px-4 py-8 text-center text-ink/70' }, 'No entries match “' + logQuery.trim() + '”.')));
+  if (!rows.length && !q) {
     const cell = h('td', { colspan: '5', class: 'px-4 py-8 text-center text-ink/70' }, 'Nothing logged yet. Add an activity above, or ',
       h('button', { type: 'button', class: 'font-semibold text-spruce underline underline-offset-4', onclick: () => { state.entries = makeSample(); commit(); } }, 'load sample data'), '.');
     body.append(h('tr', {}, cell));
@@ -715,7 +752,7 @@ function renderLog() {
   });
 
   const more = $('#log-more');
-  more.classList.toggle('hidden', rows.length <= 8);
+  more.classList.toggle('hidden', rows.length <= 8 || !!q);
   more.textContent = showAllRows ? 'Show fewer' : `Show all ${rows.length} entries`;
   $('#log-summary').textContent = rows.length
     ? `${rows.length} entries, ${fmt(rows.reduce((s, e) => s + e.kg, 0))} kg CO₂e in total.` + (storageOK ? '' : ' Saving is turned off in this browser, so this log will be lost when you close the page.')
@@ -1233,21 +1270,13 @@ setInterval(() => { if (toStr(new Date()) !== $('#receipt-date').getAttribute('d
    online, offline, visibilitychange, beforeunload
    ===================================================================== */
 
-/* ---- Live event monitor (shows every event listed in the Events section) ---- */
-const eventLog = [];
+/* ---- Event logger: prints to the browser console (F12), nothing is shown on the page ---- */
 const lastLogged = {};
 function logEvent(type, target, note, throttleMs = 0) {
   const now = Date.now();
   if (throttleMs && now - (lastLogged[type] || 0) < throttleMs) return;
   lastLogged[type] = now;
-  eventLog.unshift({ type, target, note, time: new Date().toLocaleTimeString('en-IN') });
-  eventLog.length = Math.min(eventLog.length, 8);
-  const list = $('#event-log');
-  list.replaceChildren();
-  eventLog.forEach((ev) => list.append(h('li', {},
-    h('span', { class: 'text-white/60' }, ev.time + ' '),
-    h('strong', { class: 'text-marigold' }, ev.type), ' ',
-    h('span', { class: 'text-white/70' }, ev.target + ': '), ev.note)));
+  console.log('%c[event]%c ' + type + ' on ' + target + ': ' + note, 'color:#F2A900;font-weight:bold', 'color:inherit');
 }
 
 /* ---- focus and blur: field hints, select-on-focus, tidy-on-blur ---- */
@@ -1377,3 +1406,124 @@ kindSelect.addEventListener('change', () => logEvent('change', '#kind', 'Activit
 form.addEventListener('submit', () => logEvent('submit', '#estimator', 'Form submitted'));
 pledgeZone.addEventListener('drop', () => logEvent('drop', '#pledge-zone', 'Pledge dropped'));
 bars.addEventListener('pointermove', () => logEvent('pointermove', '#bars', 'Bar inspected', 600));
+
+
+/* =====================================================================
+   MORE EVENTS
+   keyup, paste, copy, contextmenu, mousemove, mouseleave, resize,
+   hashchange, toggle, DOMContentLoaded
+   ===================================================================== */
+
+/* ---- keyup: filter the log as you type (Esc clears) ---- */
+const logFilter = $('#log-filter');
+logFilter.addEventListener('keyup', (e) => {
+  if (e.key === 'Escape') logFilter.value = '';
+  if (logFilter.value === logQuery) return;
+  logQuery = logFilter.value;
+  renderLog();
+  logEvent('keyup', '#log-filter', 'Filter: "' + logQuery + '"', 300);
+});
+
+/* ---- paste: pull the number out of text such as "12 km" ---- */
+amountInput.addEventListener('paste', (e) => {
+  e.preventDefault();
+  const text = (e.clipboardData || window.clipboardData).getData('text');
+  const m = text.replace(/,/g, '').match(/\d+(\.\d+)?/);
+  if (!m) { toast('No number found in the pasted text.'); return; }
+  amountInput.value = m[0];
+  update(); saveDraft();
+  toast('Pasted ' + m[0] + ' from "' + text.trim().slice(0, 20) + '".');
+  logEvent('paste', '#amount', 'Number extracted: ' + m[0]);
+});
+
+/* ---- copy: add a source line when receipt text is copied ---- */
+document.querySelector('[aria-labelledby="receipt-title"]').addEventListener('copy', (e) => {
+  const selected = String(document.getSelection());
+  if (!selected) return;
+  e.preventDefault();
+  e.clipboardData.setData('text/plain', selected + '\n— CarbonFootprint India, ' + niceDate(todayStr()));
+  toast('Receipt text copied with a source line.');
+  logEvent('copy', 'receipt', 'Copied with source line');
+});
+
+/* ---- contextmenu: right-click a log row ---- */
+const ctxMenu = h('div', { role: 'menu', class: 'fixed z-[80] hidden w-48 rounded-md border border-ink/20 bg-white p-1 text-sm shadow-lg' });
+document.body.append(ctxMenu);
+const hideCtx = () => ctxMenu.classList.add('hidden');
+$('#log-body').addEventListener('contextmenu', (e) => {
+  const row = e.target.closest('tr[data-id]');
+  if (!row) return;
+  e.preventDefault();
+  const id = row.dataset.id;
+  const item = (label, fn) => h('button', { type: 'button', role: 'menuitem', class: 'block w-full rounded px-3 py-2 text-left font-semibold hover:bg-sage', onclick: () => { hideCtx(); fn(); } }, label);
+  ctxMenu.replaceChildren(
+    item('Log again today', () => {
+      const src = state.entries.find((x) => x.id === id);
+      if (!src) return;
+      state.entries.push(makeEntry(todayStr(), src.kind, src.amount, false));
+      commit(); toast('Logged again for today.');
+    }),
+    item('Remove entry', () => removeEntry(id)));
+  ctxMenu.style.left = Math.min(e.clientX, window.innerWidth - 200) + 'px';
+  ctxMenu.style.top = Math.min(e.clientY, window.innerHeight - 100) + 'px';
+  ctxMenu.classList.remove('hidden');
+  ctxMenu.firstChild.focus();
+  logEvent('contextmenu', 'log row', 'Custom menu opened');
+});
+document.addEventListener('click', hideCtx);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideCtx(); });
+window.addEventListener('scroll', hideCtx, { passive: true });
+
+/* ---- mousemove / mouseleave: tooltip that follows the cursor over the donut ---- */
+const donutTip = h('div', { class: 'pointer-events-none fixed z-[80] hidden rounded bg-ink px-2.5 py-1.5 text-xs font-semibold text-white shadow' });
+document.body.append(donutTip);
+donut.addEventListener('mousemove', (e) => {
+  if (!analysis || analysis.monthTotal <= 0) return;
+  const r = donut.getBoundingClientRect();
+  const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+  const R = Math.min(r.width, r.height) / 2 - 4, dist = Math.hypot(dx, dy);
+  let hit = null;
+  if (dist <= R && dist >= R * 0.72) { // only the ring, not the hole
+    let ang = Math.atan2(dy, dx) + Math.PI / 2;
+    if (ang < 0) ang += Math.PI * 2;
+    let acc = 0;
+    for (const k of CAT_ORDER) {
+      const sweep = (analysis.cats[k] / analysis.monthTotal) * Math.PI * 2;
+      if (ang >= acc && ang < acc + sweep) { hit = k; break; }
+      acc += sweep;
+    }
+  }
+  if (!hit) { donutTip.classList.add('hidden'); highlightCategory(null, 'mousemove'); return; }
+  donutTip.textContent = `${CAT_NAME[hit]}: ${fmt(analysis.cats[hit])} kg (${Math.round((analysis.cats[hit] / analysis.monthTotal) * 100)}%)`;
+  donutTip.style.left = Math.min(e.clientX + 14, window.innerWidth - 200) + 'px';
+  donutTip.style.top = e.clientY + 14 + 'px';
+  donutTip.classList.remove('hidden');
+  highlightCategory(hit, 'mousemove');
+});
+donut.addEventListener('mouseleave', () => { donutTip.classList.add('hidden'); highlightCategory(null, 'mouseleave'); });
+
+/* ---- resize: reset the mobile menu when the window grows to desktop size ---- */
+window.addEventListener('resize', () => {
+  if (window.matchMedia('(min-width: 1024px)').matches) setMenu(false);
+  logEvent('resize', 'window', window.innerWidth + ' x ' + window.innerHeight, 500);
+});
+
+/* ---- hashchange: the tab title follows the section ---- */
+const SECTION_NAMES = { home: 'Dashboard', activities: 'Log Activity', log: 'My Log', insights: 'Insights', pledges: 'Pledges', about: 'About' };
+window.addEventListener('hashchange', () => {
+  document.title = 'CarbonFootprint India | ' + (SECTION_NAMES[location.hash.slice(1)] || 'Dashboard');
+  logEvent('hashchange', 'window', location.hash || '#');
+});
+
+/* ---- toggle: the summary text follows the open state of <details> ---- */
+const tableDetails = document.querySelector('#insights details');
+tableDetails.addEventListener('toggle', () => {
+  tableDetails.querySelector('summary').textContent = tableDetails.open ? 'Hide the table' : 'View the same data as a table';
+  logEvent('toggle', 'details', tableDetails.open ? 'opened' : 'closed');
+});
+
+/* ---- DOMContentLoaded: welcome message with today's total ---- */
+document.addEventListener('DOMContentLoaded', () => {
+  const t = sumForDate(todayStr());
+  toast(t > 0 ? `Welcome back. Today you are at ${fmt(t)} kg CO₂e.` : 'Welcome. Nothing logged today yet.');
+});
