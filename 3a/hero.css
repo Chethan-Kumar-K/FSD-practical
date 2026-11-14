@@ -1,0 +1,190 @@
+/* =====================================================================
+   Retro receipt hero. Layered planes + thermal-paper receipt.
+   Loaded after styles.css. Nothing here touches the app sections.
+   ===================================================================== */
+
+/* ---- Layout: fill the screen under the sticky header ---- */
+.hero {
+  min-height: calc(100svh - var(--hh, 4.25rem));
+  display: flex;
+  align-items: center;
+}
+.hero-inner { position: relative; z-index: 10; }
+
+/* ---- Depth planes (back to front) ---- */
+.hero-plane {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  will-change: transform;
+  transform-origin: 50% 100%;
+}
+.hero-photo { inset: -6% 0; transform-origin: 50% 50%; }
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Duotone: grayscale photo screened over the spruce background */
+  filter: grayscale(1) contrast(1.15);
+  mix-blend-mode: screen;
+  opacity: .34;
+}
+/* Scrim only on the side where the text sits */
+.hero-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(var(--c-spruce)) 0%, rgb(var(--c-spruce) / .75) 38%, transparent 75%);
+}
+.hero-far,
+.hero-near {
+  top: auto;
+  bottom: 0;
+  width: 100%;
+  height: min(55%, 26rem);
+}
+.hero-far { color: rgb(255 255 255 / .07); }
+.hero-near { color: rgb(var(--c-spruce-deep) / .8); }
+.hero-haze {
+  inset: 0 -15%;
+  transform-origin: 50% 50%;
+  background:
+    radial-gradient(60% 40% at 18% 82%, rgb(242 169 0 / .16), transparent 70%),
+    radial-gradient(50% 35% at 82% 68%, rgb(255 255 255 / .09), transparent 70%);
+}
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: .14;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- Headline words (split by hero.js) ---- */
+.hero-word { display: inline-block; }
+
+/* Hide animated pieces only while GSAP is about to run (no flash, no stuck-hidden if GSAP fails) */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-prep .hero-anim { opacity: 0; }
+}
+
+/* ---- Printer + receipt ---- */
+.hero-receipt-wrap {
+  rotate: 1.2deg; /* separate from transform so GSAP never fights it */
+  filter: drop-shadow(0 18px 22px rgb(0 0 0 / .35));
+}
+.hero-printer {
+  position: relative;
+  z-index: 3;
+  height: 1.6rem;
+  margin: 0 -.75rem;
+  border-radius: .5rem;
+  background: linear-gradient(#2a2f2e, #161a19);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .18);
+}
+.hero-printer::after {            /* the paper slot */
+  content: "";
+  position: absolute;
+  left: .9rem;
+  right: .9rem;
+  bottom: .3rem;
+  height: .3rem;
+  border-radius: 2px;
+  background: #000;
+}
+.hero-led {
+  position: absolute;
+  top: .5rem;
+  right: 1.1rem;
+  width: .45rem;
+  height: .45rem;
+  border-radius: 50%;
+  background: #F2A900;
+  box-shadow: 0 0 6px 1px rgb(242 169 0 / .7);
+  animation: hero-blink 1.6s steps(2, jump-none) infinite;
+}
+@keyframes hero-blink { 50% { opacity: .25; } }
+
+/* Thermal paper. The receipt stays cream in dark mode, like real paper,
+   so the colour variables are pinned to their light values inside it. */
+.receipt-paper {
+  --c-ink: 23 48 45; --c-spruce: 15 76 71; --c-marigold: 242 169 0;
+  --c-marigold-deep: 143 95 0; --c-sage: 234 241 236; --c-leaf: 47 125 87;
+  position: relative;
+  z-index: 1;
+  margin-top: -.45rem;
+  background: #FBF6E9;
+  color: rgb(23 48 45);
+  font-family: "Courier Prime", "Courier New", ui-monospace, monospace;
+}
+.receipt-paper .font-display,
+.receipt-paper .font-sans {
+  font-family: "Courier Prime", "Courier New", ui-monospace, monospace;
+}
+.receipt-paper h2 { font-weight: 700; text-transform: uppercase; letter-spacing: .02em; font-size: 1.25rem; line-height: 1.2; }
+.receipt-paper #receipt-total { font-weight: 700; }
+/* styles.css recolours .text-spruce and the torn edge in dark mode; the paper stays cream, so pin them back */
+html.dark .receipt-paper .text-spruce { color: #0F4C47; }
+html.dark .receipt-paper #teeth path { fill: #FBF6E9; }
+/* Existing receipt rows get dashed leaders instead of dotted */
+.receipt-paper #receipt-lines .border-dotted { border-bottom-style: dashed; }
+/* app code adds .reveal to the receipt body; the printing effect replaces it */
+.receipt-paper > div { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+.receipt-brand {
+  text-align: center;
+  font-weight: 700;
+  font-size: .8rem;
+  letter-spacing: .12em;
+  color: rgb(23 48 45 / .7);
+}
+.receipt-barcode {
+  width: 52%;
+  height: 2.4rem;
+  margin-top: 1.5rem;
+  background: repeating-linear-gradient(90deg,
+    #17302D 0 2px, transparent 2px 4px,
+    #17302D 4px 5px, transparent 5px 9px,
+    #17302D 9px 12px, transparent 12px 14px);
+  opacity: .85;
+}
+.receipt-thanks {
+  margin-top: .75rem;
+  text-align: center;
+  font-size: .7rem;
+  letter-spacing: .1em;
+  color: rgb(23 48 45 / .65);
+}
+
+/* Rubber stamp that lands when the total is printed */
+.hero-stamp {
+  position: absolute;
+  right: .9rem;
+  bottom: 4.6rem;
+  z-index: 4;
+  padding: .3rem .7rem;
+  border: 3px solid #B45309;
+  border-radius: .35rem;
+  color: #B45309;
+  font: 700 1.05rem/1 "Courier Prime", "Courier New", ui-monospace, monospace;
+  letter-spacing: .08em;
+  transform: rotate(-12deg);
+  mix-blend-mode: multiply;
+  opacity: .9;
+  pointer-events: none;
+}
+
+/* Reduced motion: no animation, depth stays (it is in the static layout) */
+@media (prefers-reduced-motion: reduce) {
+  .hero-led { animation: none; }
+}
+
+/* Phones: calmer planes, receipt straight on */
+@media (max-width: 1023px) {
+  .hero { min-height: 0; display: block; }
+  .hero-receipt-wrap { rotate: .6deg; }
+  .hero-photo::after { background: linear-gradient(180deg, rgb(var(--c-spruce)) 0%, rgb(var(--c-spruce) / .8) 45%, transparent 100%); }
+  .hero-far, .hero-near { height: 38%; }
+}
